@@ -7,6 +7,7 @@ import Card from "./components/questionnaire/Card";
 export default function Home() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentOptions, setCurrentOptions] = useState(Questions[0].options);
+  const [selected, setSelected] = useState(currentOptions);
 
   const handleNextQuestion = () => {
     const nextIndex = currentQuestionIndex + 1;
@@ -24,15 +25,12 @@ export default function Home() {
     }
   };
 
-  const handleSelectedCheckbox = (index: number) => {
-    const selectedOption = currentOptions.map((option, optionIndex) => {
-      if (index === optionIndex) {
-        return { ...option, checked: !option.checked };
-      }
-      return option;
-    });
-    setCurrentOptions(selectedOption);
-    console.log(selectedOption);
+  const handleSelect = (index: number) => {
+    const newSelected = [...selected];
+    newSelected[index].checked = !newSelected[index].checked;
+    setSelected(newSelected);
+
+    console.log(selected);
   };
 
   return (
@@ -44,7 +42,7 @@ export default function Home() {
         currentOptions={currentOptions}
         handleNextQuestion={handleNextQuestion}
         handleBackQuestion={handleBackQuestion}
-        handleSelectedCheckbox={handleSelectedCheckbox}
+        handleSelect={handleSelect}
       />
     </div>
   );

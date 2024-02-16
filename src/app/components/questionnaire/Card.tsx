@@ -10,7 +10,7 @@ interface CardProps {
   }[];
   handleNextQuestion: () => void;
   handleBackQuestion: () => void;
-  handleSelectedCheckbox: (index: number) => void;
+  handleSelect: (index: number) => void;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -20,7 +20,7 @@ const Card: React.FC<CardProps> = ({
   currentOptions,
   handleNextQuestion,
   handleBackQuestion,
-  handleSelectedCheckbox,
+  handleSelect,
 }) => {
   return (
     <div className="flex justify-center w-full items-center relative z-10">
@@ -28,10 +28,7 @@ const Card: React.FC<CardProps> = ({
         <div className="flex flex-col bg-white p-8 rounded-[32px] shadow-lg h-fit gap-2">
           <h1 className="text-xl font-bold w-full text-[#101828]">{title}</h1>
           <p className="text-[#667085]">{description}</p>
-          <Selection
-            options={currentOptions}
-            handleSelectedCheckbox={handleSelectedCheckbox}
-          />
+          <Selection options={currentOptions} handleSelect={handleSelect} />
         </div>
         <div className="flex justify-between w-full">
           {currentQuestionIndex > 0 && (

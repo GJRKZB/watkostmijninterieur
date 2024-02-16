@@ -1,10 +1,10 @@
-interface Question {
+export interface Question {
   title: string;
   description: string;
   options: Option[];
 }
 
-interface Option {
+export interface Option {
   label: string;
   checked: boolean;
 }
