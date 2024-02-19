@@ -1,4 +1,4 @@
-import Selection from "./Selection";
+import Selection from "./selection";
 
 interface CardProps {
   title: string;
@@ -23,17 +23,17 @@ const Card: React.FC<CardProps> = ({
   handleSelect,
 }) => {
   return (
-    <div className="flex justify-center w-full items-center relative z-10">
-      <div className="w-9/12 max-w-[796px] flex-col gap-4 flex">
-        <div className="flex flex-col bg-white p-8 rounded-[32px] shadow-lg h-fit gap-2">
-          <h1 className="text-xl font-bold w-full text-[#101828]">{title}</h1>
+    <div className="relative z-10 flex w-full items-center justify-center">
+      <div className="flex w-9/12 max-w-[796px] flex-col gap-4">
+        <div className="flex h-fit flex-col gap-2 rounded-[32px] bg-white p-8 shadow-lg">
+          <h1 className="w-full text-xl font-bold text-[#101828]">{title}</h1>
           <p className="text-[#667085]">{description}</p>
           <Selection options={currentOptions} handleSelect={handleSelect} />
         </div>
-        <div className="flex justify-between w-full">
+        <div className="flex w-full justify-between">
           {currentQuestionIndex > 0 && (
             <button
-              className="bg-[#020246] p-3 text-white rounded-lg shadow-lg right-0 w-28"
+              className="right-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
               onClick={handleBackQuestion}
             >
               Back
@@ -41,7 +41,7 @@ const Card: React.FC<CardProps> = ({
           )}
           <button
             onClick={handleNextQuestion}
-            className="bg-[#020246] p-3 text-white rounded-lg shadow-lg w-28 ml-auto mr-0"
+            className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
           >
             Next
           </button>

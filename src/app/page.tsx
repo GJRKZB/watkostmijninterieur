@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { Questions } from "./data/Questions";
-import Card from "./components/questionnaire/Card";
+import { useState, useEffect } from "react";
+import { Questions } from "./data/questions";
+import Card from "./components/questionnaire/card";
 
 export default function Home() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -15,6 +15,7 @@ export default function Home() {
       setCurrentQuestionIndex(nextIndex);
       setCurrentOptions(Questions[nextIndex].options);
     }
+    console.log(currentOptions);
   };
 
   const handleBackQuestion = () => {
@@ -24,6 +25,10 @@ export default function Home() {
       setCurrentOptions(Questions[backIndex].options);
     }
   };
+
+  useEffect(() => {
+    console.log("Current options: ", currentOptions);
+  }, [currentOptions]);
 
   const handleSelect = (index: number) => {
     const newSelected = [...selected];
