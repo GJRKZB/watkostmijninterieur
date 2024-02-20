@@ -1,4 +1,4 @@
-import { Option } from "@/app/data/Questions";
+import { Option } from "@/app/data/questions";
 
 interface SelectionProps {
   options: Option[];
@@ -11,12 +11,12 @@ const Selection: React.FC<SelectionProps> = ({ options, handleSelect }) => {
       {options.map((option, index) => (
         <div
           key={index}
-          className="flex gap-3 border border-[#E4E7EC] rounded-lg p-4 items-center cursor-pointer"
+          className={`flex cursor-pointer items-center gap-3 rounded-lg border border-[#E4E7EC] p-4 ${option.checked ? "bg-[#F9FAFB]" : "bg-white"}`}
           onClick={() => handleSelect(index)}
         >
-          <input type="checkbox" />
+          <input type="checkbox" checked={option.checked} readOnly />
           <div className="flex flex-col">
-            <label className="leading-none text-[#101828] cursor-pointer">
+            <label className="cursor-pointer leading-none text-[#101828]">
               {option.label}
             </label>
           </div>
