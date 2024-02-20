@@ -1,8 +1,8 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { Questions } from "./data/questions";
-import Card from "./components/questionnaire/card";
+import { useState } from "react";
+import { Questions } from "@/app/data/questions";
+import Card from "@/app/components/questionnaire/card";
 
 export default function Home() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
