@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { FormEvent, useState } from "react";
 import { Questions } from "./data/questions";
 import Card from "./components/questionnaire/card";
 
 export default function Home() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentOptions, setCurrentOptions] = useState(Questions[0].options);
-  const [selected, setSelected] = useState(currentOptions);
+  const [answers, setAnswers] = useState({});
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const handleNextQuestion = () => {
     const nextIndex = currentQuestionIndex + 1;
@@ -26,20 +27,23 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    console.log("Current options: ", currentOptions);
-  }, [currentOptions]);
-
   const handleSelect = (index: number) => {
-    const newSelected = [...selected];
-    newSelected[index].checked = !newSelected[index].checked;
-    setSelected(newSelected);
+    const updatedOptions = [...currentOptions];
+    updatedOptions[index].checked = !updatedOptions[index].checked;
+    setCurrentOptions(updatedOptions);
 
-    console.log(selected);
+    const updatedAnswers = {
+      ...answers,
+      [currentQuestionIndex]: updatedOptions.filter((option) => option.checked),
+    };
+    setAnswers(updatedAnswers);
+    console.log(answers);
   };
 
+  const isLastQuestion = currentQuestionIndex === Questions.length - 1;
+
   return (
-    <div className="flex h-full">
+    <div className="h-full">
       <Card
         title={Questions[currentQuestionIndex].title}
         description={Questions[currentQuestionIndex].description}
@@ -48,6 +52,7 @@ export default function Home() {
         handleNextQuestion={handleNextQuestion}
         handleBackQuestion={handleBackQuestion}
         handleSelect={handleSelect}
+        isLastQuestion={isLastQuestion}
       />
     </div>
   );
