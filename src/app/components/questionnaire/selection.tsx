@@ -7,7 +7,7 @@ interface SelectionProps {
 
 const Selection: React.FC<SelectionProps> = ({ options, handleSelect }) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex max-h-80 flex-col gap-2 overflow-auto">
       {options.map((option, index) => (
         <div
           key={index}

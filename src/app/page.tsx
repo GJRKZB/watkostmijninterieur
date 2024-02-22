@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Questions } from "@/app/data/questions";
-import Card from "@/app/components/questionnaire/card";
+import { Questions } from "./data/questions";
+import Card from "./components/questionnaire/card";
 
 export default function Home() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentOptions, setCurrentOptions] = useState(Questions[0].options);
   const [answers, setAnswers] = useState({});
-  const [isCompleted, setIsCompleted] = useState(false);
 
   const handleNextQuestion = () => {
     const nextIndex = currentQuestionIndex + 1;
@@ -43,7 +42,7 @@ export default function Home() {
   const isLastQuestion = currentQuestionIndex === Questions.length - 1;
 
   return (
-    <div className="h-full">
+    <div className="flex h-full w-full items-center justify-center">
       <Card
         title={Questions[currentQuestionIndex].title}
         description={Questions[currentQuestionIndex].description}
