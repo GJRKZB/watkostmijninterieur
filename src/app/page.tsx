@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Questions } from "./data/questions";
 import Card from "./components/questionnaire/card";
+import dotenv from "dotenv";
+dotenv.config();
 
 export default function Home() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
