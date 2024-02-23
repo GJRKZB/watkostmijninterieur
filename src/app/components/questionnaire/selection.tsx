@@ -1,20 +1,41 @@
-import { Option } from "@/app/data/questions";
+import { IQuestion } from "@/utils/question";
 
 interface SelectionProps {
-  options: Option[];
-  handleSelect: (index: number) => void;
+  question: IQuestion;
+  selectedOptions: string[];
+  handleSelect: (
+    questionTitle: string,
+    optionLabel: string,
+    isChecked: boolean,
+  ) => void;
 }
 
-const Selection: React.FC<SelectionProps> = ({ options, handleSelect }) => {
+const Selection: React.FC<SelectionProps> = ({
+  question,
+  selectedOptions,
+  handleSelect,
+}) => {
   return (
     <div className="flex max-h-80 flex-col gap-2 overflow-auto">
-      {options.map((option, index) => (
+      {question.options.map((option, index) => (
         <div
           key={index}
-          className={`flex cursor-pointer items-center gap-3 rounded-lg border border-[#E4E7EC] p-4 ${option.checked ? "bg-[#F9FAFB]" : "bg-white"}`}
-          onClick={() => handleSelect(index)}
+          className={`flex cursor-pointer items-center gap-3 rounded-lg border border-[#E4E7EC] p-4 ${selectedOptions.includes(option.label) ? "bg-[#F9FAFB]" : "bg-white"}`}
+          onClick={() =>
+            handleSelect(
+              question.title,
+              option.label,
+              !selectedOptions.includes(option.label),
+            )
+          }
         >
-          <input type="checkbox" checked={option.checked} readOnly />
+          <input
+            type="checkbox"
+            name={question.title}
+            value={option.label}
+            checked={selectedOptions.includes(option.label)}
+            readOnly
+          />
           <div className="flex flex-col">
             <label className="cursor-pointer leading-none text-[#101828]">
               {option.label}
