@@ -1,80 +1,71 @@
-import { useState } from "react";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import Selection from "./selection";
-import Completion from "./completion";
+import { IQuestion } from "@/utils/question";
 
-interface CardProps {
-  title: string;
-  description: string;
+export interface CardProps {
+  question: IQuestion;
   currentQuestionIndex: number;
-  currentOptions: {
-    label: string;
-    checked: boolean;
-  }[];
+  selectedOptions: string[];
+  handleSelect: (
+    questionTitle: string,
+    optionLabel: string,
+    isChecked: boolean,
+  ) => void;
+
   handleNextQuestion: () => void;
   handleBackQuestion: () => void;
-  handleSelect: (index: number) => void;
-  isLastQuestion: boolean;
+  handleSubmit: (event: FormEvent) => void;
 }
 
 const Card: React.FC<CardProps> = ({
-  title,
-  description,
+  question,
   currentQuestionIndex,
-  currentOptions,
+  selectedOptions,
+  handleSelect,
   handleNextQuestion,
   handleBackQuestion,
-  handleSelect,
-  isLastQuestion,
+  handleSubmit,
 }) => {
-  const [isCompleted, setIsCompleted] = useState(false);
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    setIsCompleted(true);
-  };
-
   return (
     <div className="flex h-full w-9/12 max-w-[796px] flex-col justify-center gap-4">
       <div className="flex flex-col gap-4 rounded-[32px] bg-white p-8 shadow-lg">
-        {isCompleted ? (
-          <Completion />
+        <h1 className="w-full text-xl font-bold text-[#101828]">
+          {question.title}
+        </h1>
+        <p className="text-[#667085]">{question.description}</p>
+        <Selection
+          question={question}
+          selectedOptions={selectedOptions}
+          handleSelect={handleSelect}
+        />
+      </div>
+      <div className="flex w-full justify-between">
+        {currentQuestionIndex > 0 && (
+          <button
+            className="right-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
+            onClick={handleBackQuestion}
+          >
+            Back
+          </button>
+        )}
+        {currentQuestionIndex < 4 ? (
+          <button
+            onClick={handleNextQuestion}
+            className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
+          >
+            Next
+          </button>
         ) : (
-          <>
-            <h1 className="w-full text-xl font-bold text-[#101828]">{title}</h1>
-            <p className="text-[#667085]">{description}</p>
-            <Selection options={currentOptions} handleSelect={handleSelect} />
-          </>
+          <form onSubmit={handleSubmit}>
+            <button
+              className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
+              type="submit"
+            >
+              Submit
+            </button>
+          </form>
         )}
       </div>
-      {!isCompleted && (
-        <div className="flex w-full justify-between">
-          {currentQuestionIndex > 0 && (
-            <button
-              className="right-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
-              onClick={handleBackQuestion}
-            >
-              Back
-            </button>
-          )}
-          {!isLastQuestion ? (
-            <button
-              onClick={handleNextQuestion}
-              className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
-            >
-              Next
-            </button>
-          ) : (
-            <form onSubmit={handleSubmit}>
-              <button
-                className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
-                type="submit"
-              >
-                Submit
-              </button>
-            </form>
-          )}
-        </div>
-      )}
     </div>
   );
 };

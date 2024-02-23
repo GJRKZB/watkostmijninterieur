@@ -1,15 +1,15 @@
-export interface Question {
+export interface IQuestion {
   title: string;
   description: string;
-  options: Option[];
+  options: IOption[];
 }
 
-export interface Option {
+export interface IOption {
   label: string;
   checked: boolean;
 }
 
-export const Questions: Question[] = [
+export const Question: IQuestion[] = [
   {
     title: "Welke ruimte wil je inrichten?",
     description: "Selecteer de ruimte die je wilt inrichten",
@@ -20,6 +20,7 @@ export const Questions: Question[] = [
       { label: "Anders", checked: false },
     ],
   },
+
   {
     title: "Type vloer",
     description: "Selecteer het type vloer dat je wilt",
@@ -36,6 +37,7 @@ export const Questions: Question[] = [
       { label: "Anders", checked: false },
     ],
   },
+
   {
     title: "Raamdecoratie",
     description: "Selecteer de raamdecoratie die je wilt",
@@ -53,6 +55,7 @@ export const Questions: Question[] = [
       { label: "Anders", checked: false },
     ],
   },
+
   {
     title: "Wand Decoratie",
     description: "Selecteer de wanddecoratie die je wilt",
@@ -63,6 +66,7 @@ export const Questions: Question[] = [
       { label: "Anders", checked: false },
     ],
   },
+
   {
     title: "Meubelen",
     description: "Selecteer de meubelen die je wilt",
