@@ -9,6 +9,7 @@ dotenv.config();
 export default function Home() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
+  const [completed, setCompleted] = useState(false);
 
   const handleSelect = (
     questionTitle: string,
@@ -49,8 +50,11 @@ export default function Home() {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
+    setCompleted(true);
     console.log(answers);
   };
+
+  const isLastQuestion = currentQuestionIndex === Question.length - 1;
 
   return (
     <div className="flex h-full w-full items-center justify-center">
@@ -62,6 +66,8 @@ export default function Home() {
         handleNextQuestion={handleNextQuestion}
         handleBackQuestion={handleBackQuestion}
         handleSubmit={handleSubmit}
+        completed={completed}
+        isLastQuestion={isLastQuestion}
       />
     </div>
   );

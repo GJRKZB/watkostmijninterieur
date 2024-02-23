@@ -1,12 +1,10 @@
 export interface IQuestion {
   title: string;
   description: string;
-  options: IOption[];
-}
-
-export interface IOption {
-  label: string;
-  checked: boolean;
+  options: {
+    label: string;
+    checked?: boolean;
+  }[];
 }
 
 export const Question: IQuestion[] = [
