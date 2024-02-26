@@ -5,14 +5,15 @@ import Completion from "./completion";
 
 export interface CardProps {
   question: IQuestion;
+  questions: IQuestion[];
   currentQuestionIndex: number;
   selectedOptions: string[];
+  answers: { [key: string]: string[] };
   handleSelect: (
     questionTitle: string,
     optionLabel: string,
     isChecked: boolean,
   ) => void;
-
   handleNextQuestion: () => void;
   handleBackQuestion: () => void;
   handleSubmit: (event: FormEvent) => void;
@@ -22,6 +23,8 @@ export interface CardProps {
 
 const Card: React.FC<CardProps> = ({
   question,
+  questions,
+  answers,
   currentQuestionIndex,
   selectedOptions,
   handleSelect,
@@ -35,10 +38,7 @@ const Card: React.FC<CardProps> = ({
     <div className="flex h-full w-9/12 max-w-[796px] flex-col justify-center gap-4">
       <div className="flex flex-col gap-4 rounded-[32px] bg-white p-8 shadow-lg">
         {completed ? (
-          <Completion
-            answers={{ [question.title]: selectedOptions }}
-            question={[question]}
-          />
+          <Completion answers={answers} questions={questions} />
         ) : (
           <>
             <h1 className="w-full text-xl font-bold text-[#101828]">
