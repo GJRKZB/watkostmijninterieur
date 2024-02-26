@@ -48,8 +48,6 @@ export default function Home() {
     console.log(answers);
   };
 
-  const isLastQuestion = currentQuestionIndex === Question.length - 1;
-
   return (
     <div className="flex h-full w-full items-center justify-center">
       <Card
@@ -63,7 +61,6 @@ export default function Home() {
         handleBackQuestion={handleBackQuestion}
         handleSubmit={handleSubmit}
         completed={completed}
-        isLastQuestion={isLastQuestion}
       />
     </div>
   );
