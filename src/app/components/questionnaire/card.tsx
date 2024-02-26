@@ -18,7 +18,6 @@ export interface CardProps {
   handleBackQuestion: () => void;
   handleSubmit: (event: FormEvent) => void;
   completed: boolean;
-  isLastQuestion: boolean;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -32,8 +31,8 @@ const Card: React.FC<CardProps> = ({
   handleBackQuestion,
   handleSubmit,
   completed,
-  isLastQuestion,
 }) => {
+  const isLastQuestion = currentQuestionIndex === questions.length - 1;
   return (
     <div className="flex h-full w-9/12 max-w-[796px] flex-col justify-center gap-4">
       <div className="flex flex-col gap-4 rounded-[32px] bg-white p-8 shadow-lg">
@@ -62,27 +61,26 @@ const Card: React.FC<CardProps> = ({
             Back
           </button>
         )}
-        {!completed && (
-          <>
-            {!isLastQuestion ? (
+        <div className="ml-auto">
+          {!completed && !isLastQuestion && (
+            <button
+              onClick={handleNextQuestion}
+              className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
+            >
+              Next
+            </button>
+          )}
+          {isLastQuestion && (
+            <form onSubmit={handleSubmit}>
               <button
-                onClick={handleNextQuestion}
                 className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
+                type="submit"
               >
-                Next
+                Submit
               </button>
-            ) : (
-              <form onSubmit={handleSubmit}>
-                <button
-                  className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
-                  type="submit"
-                >
-                  Submit
-                </button>
-              </form>
-            )}
-          </>
-        )}
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );
