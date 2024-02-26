@@ -3,12 +3,10 @@
 import { FormEvent, useState } from "react";
 import { Question } from "../utils/question";
 import Card from "./components/questionnaire/card";
-import dotenv from "dotenv";
-dotenv.config();
 
 export default function Home() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string[]>>({});
+  const [answers, setAnswers] = useState<{ [key: string]: string[] }>({});
   const [completed, setCompleted] = useState(false);
 
   const handleSelect = (
@@ -16,21 +14,17 @@ export default function Home() {
     optionLabel: string,
     isChecked: boolean,
   ) => {
-    setAnswers((prev) => {
-      const currentSelection = prev[questionTitle] || [];
+    setAnswers((prevAnswers) => {
+      const updatedSelection = { ...prevAnswers };
+      const currentSelection = updatedSelection[questionTitle] || [];
       if (isChecked) {
-        return {
-          ...prev,
-          [questionTitle]: [...currentSelection, optionLabel],
-        };
+        updatedSelection[questionTitle] = [...currentSelection, optionLabel];
       } else {
-        return {
-          ...prev,
-          [questionTitle]: currentSelection.filter(
-            (label) => label !== optionLabel,
-          ),
-        };
+        updatedSelection[questionTitle] = currentSelection.filter(
+          (label) => label !== optionLabel,
+        );
       }
+      return updatedSelection;
     });
   };
 
@@ -60,8 +54,10 @@ export default function Home() {
     <div className="flex h-full w-full items-center justify-center">
       <Card
         question={Question[currentQuestionIndex]}
+        questions={Question}
         currentQuestionIndex={currentQuestionIndex}
         selectedOptions={answers[Question[currentQuestionIndex].title] || []}
+        answers={answers}
         handleSelect={handleSelect}
         handleNextQuestion={handleNextQuestion}
         handleBackQuestion={handleBackQuestion}
