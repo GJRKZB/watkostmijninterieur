@@ -3,6 +3,7 @@ export interface IQuestion {
   description: string;
   options: {
     label: string;
+    value?: number;
   }[];
 }
 
@@ -11,10 +12,10 @@ export const Question: IQuestion[] = [
     title: "Welke ruimte wil je inrichten?",
     description: "Selecteer de ruimte die je wilt inrichten",
     options: [
-      { label: "Woonkamer" },
-      { label: "Slaapkamer(s)" },
-      { label: "Alle ruimte(n)" },
-      { label: "Anders" },
+      { label: "Woonkamer", value: 1000 },
+      { label: "Slaapkamer(s)", value: 2000 },
+      { label: "Alle ruimte(n)", value: 3000 },
+      { label: "Anders", value: 1000 },
     ],
   },
 
