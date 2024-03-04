@@ -1,48 +1,45 @@
-import { IQuestion } from "@/utils/question";
+import { ICardProps } from "./card";
+import { Question } from "@/utils/question";
 
-interface SelectionProps {
-  question: IQuestion;
-  selectedOptions: string[];
-  handleSelect: (
-    questionTitle: string,
-    optionLabel: string,
-    isChecked: boolean,
-  ) => void;
-}
-
-const Selection: React.FC<SelectionProps> = ({
-  question,
-  selectedOptions,
+const Selection: React.FC<ICardProps> = ({
   handleSelect,
+  selectedOptions,
+  questionIndex,
 }) => {
   return (
-    <div className="flex max-h-80 flex-col gap-2 overflow-auto">
-      {question.options.map((option, index) => (
-        <div
-          key={index}
-          className={`flex cursor-pointer items-center gap-3 rounded-lg border border-[#E4E7EC] p-4 ${selectedOptions.includes(option.label) ? "bg-[#F9FAFB]" : "bg-white"}`}
-          onClick={() =>
-            handleSelect(
-              question.title,
-              option.label,
-              !selectedOptions.includes(option.label),
-            )
-          }
-        >
-          <input
-            type="checkbox"
-            name={question.title}
-            value={option.label}
-            checked={selectedOptions.includes(option.label)}
-            readOnly
-          />
-          <div className="flex flex-col">
-            <label className="cursor-pointer leading-none text-[#101828]">
-              {option.label}
-            </label>
+    <div className="flex flex-col items-center justify-center gap-4">
+      {Question.map((question, index) =>
+        index === questionIndex ? (
+          <div key={question.id} className="flex w-full flex-col gap-4">
+            <h2 className="text-xl font-bold text-[#101828]">
+              {question.title}
+            </h2>
+            <p className="text-[#667085]">{question.description}</p>
+            <div className="flex max-h-80 flex-col gap-3 overflow-auto">
+              {question.options.map((option) => (
+                <label
+                  key={option.label}
+                  className={`flex cursor-pointer items-center gap-4 rounded-lg border border-[#E4E7EC] p-4 ${selectedOptions.some((selectedOption) => selectedOption.label === option.label && selectedOption.questionId === question.id) ? "bg-[#F9FAFB]" : "bg-white"}`}
+                >
+                  <input
+                    type="checkbox"
+                    className="cursor-pointer"
+                    name={option.label}
+                    value={option.label}
+                    checked={selectedOptions.some(
+                      (selectedOption) =>
+                        selectedOption.label === option.label &&
+                        selectedOption.questionId === question.id,
+                    )}
+                    onChange={() => handleSelect(option.label, question.id)}
+                  />
+                  {option.label}
+                </label>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ) : null,
+      )}
     </div>
   );
 };

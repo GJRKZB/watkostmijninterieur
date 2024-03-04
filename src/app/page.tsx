@@ -1,66 +1,87 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { Question } from "../utils/question";
+import { useState } from "react";
+import { Question } from "@/utils/question";
 import Card from "./components/questionnaire/card";
 
 export default function Home() {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<{ [key: string]: string[] }>({});
-  const [completed, setCompleted] = useState(false);
-
-  const handleSelect = (
-    questionTitle: string,
-    optionLabel: string,
-    isChecked: boolean,
-  ) => {
-    setAnswers((prevAnswers) => {
-      const updatedSelection = { ...prevAnswers };
-      const currentSelection = updatedSelection[questionTitle] || [];
-      if (isChecked) {
-        updatedSelection[questionTitle] = [...currentSelection, optionLabel];
-      } else {
-        updatedSelection[questionTitle] = currentSelection.filter(
-          (label) => label !== optionLabel,
-        );
-      }
-      return updatedSelection;
-    });
-  };
+  const [selectedOptions, setSelectedOptions] = useState<
+    { label: string; questionId: number }[]
+  >([]);
+  const [questionIndex, setQuestionIndex] = useState<number>(0);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [answers, setAnswers] = useState<
+    { questionTitle: string; selectedOptions: string[] }[]
+  >([]);
 
   const handleNextQuestion = () => {
-    const nextIndex = currentQuestionIndex + 1;
-    if (nextIndex < Question.length) {
-      setCurrentQuestionIndex(nextIndex);
+    if (questionIndex < Question.length - 1) {
+      setQuestionIndex((prev) => prev + 1);
     }
   };
 
   const handleBackQuestion = () => {
-    const backIndex = currentQuestionIndex - 1;
-    if (backIndex >= 0) {
-      setCurrentQuestionIndex(backIndex);
+    if (questionIndex > 0) {
+      setQuestionIndex((prev) => prev - 1);
     }
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSelect = (optionLabel: string, questionId: number) => {
+    const isSelected = selectedOptions.some(
+      (option) =>
+        option.label === optionLabel && option.questionId === questionId,
+    );
+
+    if (isSelected) {
+      setSelectedOptions((prev) =>
+        prev.filter(
+          (selectedOption) =>
+            !(
+              selectedOption.label === optionLabel &&
+              selectedOption.questionId === questionId
+            ),
+        ),
+      );
+    } else {
+      setSelectedOptions((prev) => [
+        ...prev,
+        { label: optionLabel, questionId },
+      ]);
+    }
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setCompleted(true);
-    console.log(answers);
+
+    const questionsAndSelectedOptions = Question.map((question) => {
+      const selectedOptionsForQuestion = selectedOptions.filter(
+        (option) => option.questionId === question.id,
+      );
+      return {
+        questionTitle: question.title,
+        selectedOptions: selectedOptionsForQuestion.map(
+          (option) => option.label,
+        ),
+      };
+    }).filter((q) => q.selectedOptions.length > 0);
+
+    setAnswers(questionsAndSelectedOptions);
+    setIsSubmitted(true);
+
+    console.log(questionsAndSelectedOptions);
   };
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
+    <div className="flex h-screen w-screen flex-col items-center justify-center ">
       <Card
-        question={Question[currentQuestionIndex]}
-        questions={Question}
-        currentQuestionIndex={currentQuestionIndex}
-        selectedOptions={answers[Question[currentQuestionIndex].title] || []}
-        answers={answers}
-        handleSelect={handleSelect}
         handleNextQuestion={handleNextQuestion}
         handleBackQuestion={handleBackQuestion}
+        handleSelect={handleSelect}
         handleSubmit={handleSubmit}
-        completed={completed}
+        selectedOptions={selectedOptions}
+        questionIndex={questionIndex}
+        isSubmitted={isSubmitted}
+        answers={answers}
       />
     </div>
   );

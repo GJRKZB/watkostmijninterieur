@@ -1,76 +1,64 @@
-import { FormEvent } from "react";
 import Selection from "./selection";
-import { IQuestion } from "@/utils/question";
 import Completion from "./completion";
+import { Question } from "@/utils/question";
 
-export interface CardProps {
-  question: IQuestion;
-  questions: IQuestion[];
-  currentQuestionIndex: number;
-  selectedOptions: string[];
-  answers: { [key: string]: string[] };
-  handleSelect: (
-    questionTitle: string,
-    optionLabel: string,
-    isChecked: boolean,
-  ) => void;
+export interface ICardProps {
   handleNextQuestion: () => void;
   handleBackQuestion: () => void;
-  handleSubmit: (event: FormEvent) => void;
-  completed: boolean;
+  handleSelect: (optionlabel: string, questionId: number) => void;
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  selectedOptions: Array<{ label: string; questionId: number }>;
+  questionIndex: number;
+  isSubmitted?: boolean;
+  answers?: { questionTitle: string; selectedOptions: string[] }[];
 }
 
-const Card: React.FC<CardProps> = ({
-  question,
-  questions,
-  answers,
-  currentQuestionIndex,
-  selectedOptions,
-  handleSelect,
+const Card: React.FC<ICardProps> = ({
   handleNextQuestion,
   handleBackQuestion,
+  handleSelect,
   handleSubmit,
-  completed,
+  selectedOptions,
+  questionIndex,
+  isSubmitted,
+  answers,
 }) => {
-  const isLastQuestion = currentQuestionIndex === questions.length - 1;
+  const isLastQuestion = questionIndex === Question.length - 1;
+
   return (
     <div className="flex h-full w-9/12 max-w-[796px] flex-col justify-center gap-4">
-      <div className="flex flex-col gap-4 rounded-[32px] bg-white p-8 shadow-lg">
-        {completed ? (
-          <Completion answers={answers} questions={questions} />
+      <div className="flex flex-col gap-4 rounded-lg bg-white p-8 shadow-lg">
+        {!isSubmitted ? (
+          <Selection
+            handleNextQuestion={handleNextQuestion}
+            handleBackQuestion={handleBackQuestion}
+            handleSelect={handleSelect}
+            handleSubmit={handleSubmit}
+            selectedOptions={selectedOptions}
+            questionIndex={questionIndex}
+          />
         ) : (
-          <>
-            <h1 className="w-full text-xl font-bold text-[#101828]">
-              {question.title}
-            </h1>
-            <p className="text-[#667085]">{question.description}</p>
-            <Selection
-              question={question}
-              selectedOptions={selectedOptions}
-              handleSelect={handleSelect}
-            />
-          </>
+          <Completion answers={answers} />
         )}
       </div>
-      <div className="flex w-full justify-between">
-        {currentQuestionIndex > 0 && !isLastQuestion && (
-          <button
-            className="right-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
-            onClick={handleBackQuestion}
-          >
-            Back
-          </button>
-        )}
-        <div className="ml-auto">
-          {!completed && !isLastQuestion && (
+      {!isSubmitted && (
+        <div className="flex justify-between gap-4 rounded-lg bg-white p-4 shadow-lg">
+          {questionIndex > 0 && (
             <button
-              onClick={handleNextQuestion}
+              className="right-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
+              onClick={handleBackQuestion}
+            >
+              Back
+            </button>
+          )}
+          {!isLastQuestion ? (
+            <button
               className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
+              onClick={handleNextQuestion}
             >
               Next
             </button>
-          )}
-          {isLastQuestion && (
+          ) : (
             <form onSubmit={handleSubmit}>
               <button
                 className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
@@ -81,7 +69,7 @@ const Card: React.FC<CardProps> = ({
             </form>
           )}
         </div>
-      </div>
+      )}
     </div>
   );
 };

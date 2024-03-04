@@ -5,7 +5,6 @@ interface Question {
   description: string;
   options: {
     label: string;
-    checked: boolean;
   }[];
 }
 
@@ -15,7 +14,6 @@ const QuestionSchema = new Schema<Question>({
   options: [
     {
       label: { type: String, required: true },
-      checked: { type: Boolean, required: true },
     },
   ],
 });
