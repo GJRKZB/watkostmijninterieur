@@ -1,67 +1,79 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { Question } from "../utils/question";
-import Card from "./components/questionnaire/card";
+import { useState } from "react";
+import { Question } from "@/utils/question";
 
 export default function Home() {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<{ [key: string]: string[] }>({});
-  const [completed, setCompleted] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState<
+    { label: string; questionId: number }[]
+  >([]);
 
-  const handleSelect = (
-    questionTitle: string,
-    optionLabel: string,
-    isChecked: boolean,
-  ) => {
-    setAnswers((prevAnswers) => {
-      const updatedSelection = { ...prevAnswers };
-      const currentSelection = updatedSelection[questionTitle] || [];
-      if (isChecked) {
-        updatedSelection[questionTitle] = [...currentSelection, optionLabel];
-      } else {
-        updatedSelection[questionTitle] = currentSelection.filter(
-          (label) => label !== optionLabel,
-        );
-      }
-      return updatedSelection;
-    });
-  };
+  const handleSelect = (optionLabel: string, questionId: number) => {
+    const isSelected = selectedOptions.some(
+      (option) =>
+        option.label === optionLabel && option.questionId === questionId,
+    );
 
-  const handleNextQuestion = () => {
-    const nextIndex = currentQuestionIndex + 1;
-    if (nextIndex < Question.length) {
-      setCurrentQuestionIndex(nextIndex);
+    if (isSelected) {
+      setSelectedOptions((prev) =>
+        prev.filter(
+          (option) =>
+            !(option.label === optionLabel && option.questionId === questionId),
+        ),
+      );
+    } else {
+      setSelectedOptions((prev) => [
+        ...prev,
+        { label: optionLabel, questionId },
+      ]);
     }
   };
 
-  const handleBackQuestion = () => {
-    const backIndex = currentQuestionIndex - 1;
-    if (backIndex >= 0) {
-      setCurrentQuestionIndex(backIndex);
-    }
-  };
-
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setCompleted(true);
-    console.log(answers);
+
+    const questionAndSelectedOptions = Question.map((question) => {
+      const selectedOptionLabels = selectedOptions
+        .filter((option) => option.questionId === question.id)
+        .map((option) => option.label);
+
+      return {
+        title: question.title,
+        selectedOptionLabels,
+      };
+    }).filter((question) => question.selectedOptionLabels.length > 0);
+
+    setSelectedOptions([]);
+    console.log(questionAndSelectedOptions);
   };
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <Card
-        question={Question[currentQuestionIndex]}
-        questions={Question}
-        currentQuestionIndex={currentQuestionIndex}
-        selectedOptions={answers[Question[currentQuestionIndex].title] || []}
-        answers={answers}
-        handleSelect={handleSelect}
-        handleNextQuestion={handleNextQuestion}
-        handleBackQuestion={handleBackQuestion}
-        handleSubmit={handleSubmit}
-        completed={completed}
-      />
+    <div className="flex h-screen flex-col items-center justify-center gap-4">
+      <h1>Questionnaire:</h1>
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        {Question.map((question) => (
+          <div key={question.id} className="flex flex-col gap-4">
+            <h2>{question.title}</h2>
+            {question.options.map((option) => (
+              <label key={option.label} className="flex items-center gap-4">
+                <input
+                  type="checkbox"
+                  name={option.label}
+                  value={option.label}
+                  checked={selectedOptions.some(
+                    (selectedOption) =>
+                      selectedOption.label === option.label &&
+                      selectedOption.questionId === question.id,
+                  )}
+                  onChange={() => handleSelect(option.label, question.id)}
+                />
+                {option.label}
+              </label>
+            ))}
+          </div>
+        ))}
+        <button type="submit">Submit</button>
+      </form>
     </div>
   );
 }
