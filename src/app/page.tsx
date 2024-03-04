@@ -2,12 +2,17 @@
 
 import { useState } from "react";
 import { Question } from "@/utils/question";
+import Card from "./components/questionnaire/card";
 
 export default function Home() {
   const [selectedOptions, setSelectedOptions] = useState<
     { label: string; questionId: number }[]
   >([]);
   const [questionIndex, setQuestionIndex] = useState<number>(0);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [answers, setAnswers] = useState<
+    { questionTitle: string; selectedOptions: string[] }[]
+  >([]);
 
   const handleNextQuestion = () => {
     if (questionIndex < Question.length - 1) {
@@ -18,8 +23,6 @@ export default function Home() {
   const handleBackQuestion = () => {
     if (questionIndex > 0) {
       setQuestionIndex((prev) => prev - 1);
-    } else {
-      setQuestionIndex(Question.length - 1);
     }
   };
 
@@ -32,8 +35,11 @@ export default function Home() {
     if (isSelected) {
       setSelectedOptions((prev) =>
         prev.filter(
-          (option) =>
-            !(option.label === optionLabel && option.questionId === questionId),
+          (selectedOption) =>
+            !(
+              selectedOption.label === optionLabel &&
+              selectedOption.questionId === questionId
+            ),
         ),
       );
     } else {
@@ -59,42 +65,24 @@ export default function Home() {
       };
     }).filter((q) => q.selectedOptions.length > 0);
 
+    setAnswers(questionsAndSelectedOptions);
+    setIsSubmitted(true);
+
     console.log(questionsAndSelectedOptions);
   };
 
   return (
-    <div className="flex h-full  flex-col items-center justify-center gap-4">
-      <h1>Questionnaire:</h1>
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        {Question.map((question, index) =>
-          index === questionIndex ? (
-            <div key={question.id} className="flex flex-col gap-4">
-              <h2>{question.title}</h2>
-              {question.options.map((option) => (
-                <label key={option.label} className="flex items-center gap-4">
-                  <input
-                    type="checkbox"
-                    name={option.label}
-                    value={option.label}
-                    checked={selectedOptions.some(
-                      (selectedOption) =>
-                        selectedOption.label === option.label &&
-                        selectedOption.questionId === question.id,
-                    )}
-                    onChange={() => handleSelect(option.label, question.id)}
-                  />
-                  {option.label}
-                </label>
-              ))}
-            </div>
-          ) : null,
-        )}
-        <div className="flex justify-between gap-4">
-          <button onClick={handleBackQuestion}>Back</button>
-          <button onClick={handleNextQuestion}>Next</button>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+    <div className="flex h-screen w-screen flex-col items-center justify-center ">
+      <Card
+        handleNextQuestion={handleNextQuestion}
+        handleBackQuestion={handleBackQuestion}
+        handleSelect={handleSelect}
+        handleSubmit={handleSubmit}
+        selectedOptions={selectedOptions}
+        questionIndex={questionIndex}
+        isSubmitted={isSubmitted}
+        answers={answers}
+      />
     </div>
   );
 }

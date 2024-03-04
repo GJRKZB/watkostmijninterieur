@@ -1,12 +1,10 @@
-import CompletionIcon from "../../../../public/check-icon.png";
-import { IQuestion } from "@/utils/question";
+import CompletionIcon from "@/../public/check-icon.png";
 
-interface CompletionProps {
-  answers: Record<string, string[]>;
-  questions: IQuestion[];
+export interface ICompletionProps {
+  answers?: { questionTitle: string; selectedOptions: string[] }[];
 }
 
-const Completion: React.FC<CompletionProps> = ({ answers, questions }) => {
+const Completion: React.FC<ICompletionProps> = ({ answers }) => {
   return (
     <div className="flex flex-col items-center justify-center gap-4 overflow-auto">
       <img src={CompletionIcon.src} alt="Completion Icon" />
@@ -15,15 +13,15 @@ const Completion: React.FC<CompletionProps> = ({ answers, questions }) => {
       </h1>
       <div className="flex max-h-72 w-full flex-col gap-4 overflow-auto">
         <p className="text-center text-[#667085]">Selected answers:</p>
-        {questions.map((question) => (
+        {answers?.map((answer) => (
           <div
-            key={question.title}
+            key={answer.questionTitle}
             className="flex w-full flex-col text-center"
           >
-            <h3 className="font-bold">{question.title}</h3>
+            <h3 className="font-bold">{answer.questionTitle}</h3>
             <ul>
-              {answers[question.title]?.map((answer) => (
-                <li key={answer}>{answer}</li>
+              {answer.selectedOptions.map((option) => (
+                <li key={option}>{option}</li>
               ))}
             </ul>
           </div>
@@ -32,5 +30,4 @@ const Completion: React.FC<CompletionProps> = ({ answers, questions }) => {
     </div>
   );
 };
-
 export default Completion;
