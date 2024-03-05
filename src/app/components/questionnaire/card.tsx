@@ -1,6 +1,7 @@
 import Selection from "./selection";
 import Completion from "./completion";
 import { Question } from "@/utils/question";
+import { Button } from "@nextui-org/react";
 
 export interface ICardProps {
   handleNextQuestion: () => void;
@@ -44,28 +45,31 @@ const Card: React.FC<ICardProps> = ({
       {!isSubmitted && (
         <div className="flex justify-between gap-4 rounded-lg bg-white p-4 shadow-lg">
           {questionIndex > 0 && (
-            <button
-              className="right-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
+            <Button
+              className="right-0 w-28 rounded-lg bg-[#020246] text-white shadow-lg"
+              size="lg"
               onClick={handleBackQuestion}
             >
               Back
-            </button>
+            </Button>
           )}
           {!isLastQuestion ? (
-            <button
-              className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
+            <Button
+              className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] text-white shadow-lg"
+              size="lg"
               onClick={handleNextQuestion}
             >
               Next
-            </button>
+            </Button>
           ) : (
             <form onSubmit={handleSubmit}>
-              <button
-                className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] p-3 text-white shadow-lg"
+              <Button
+                className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] text-white shadow-lg"
+                size="lg"
                 type="submit"
               >
                 Submit
-              </button>
+              </Button>
             </form>
           )}
         </div>

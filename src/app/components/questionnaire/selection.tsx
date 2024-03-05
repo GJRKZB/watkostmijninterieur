@@ -1,5 +1,6 @@
 import { ICardProps } from "./card";
 import { Question } from "@/utils/question";
+import { CheckboxGroup, Checkbox, ScrollShadow } from "@nextui-org/react";
 
 const Selection: React.FC<ICardProps> = ({
   handleSelect,
@@ -15,28 +16,33 @@ const Selection: React.FC<ICardProps> = ({
               {question.title}
             </h2>
             <p className="text-[#667085]">{question.description}</p>
-            <div className="flex max-h-80 flex-col gap-3 overflow-auto">
-              {question.options.map((option) => (
-                <label
-                  key={option.label}
-                  className={`flex cursor-pointer items-center gap-4 rounded-lg border border-[#E4E7EC] p-4 ${selectedOptions.some((selectedOption) => selectedOption.label === option.label && selectedOption.questionId === question.id) ? "bg-[#F9FAFB]" : "bg-white"}`}
-                >
-                  <input
-                    type="checkbox"
-                    className="cursor-pointer"
-                    name={option.label}
-                    value={option.label}
-                    checked={selectedOptions.some(
-                      (selectedOption) =>
-                        selectedOption.label === option.label &&
-                        selectedOption.questionId === question.id,
-                    )}
-                    onChange={() => handleSelect(option.label, question.id)}
-                  />
-                  {option.label}
-                </label>
-              ))}
-            </div>
+            <ScrollShadow
+              className="flex max-h-80 flex-col gap-3 overflow-auto"
+              size={50}
+            >
+              <CheckboxGroup>
+                {question.options.map((option) => (
+                  <label
+                    key={option.label}
+                    className={`flex cursor-pointer items-center gap-4 rounded-lg border border-[#E4E7EC] p-4 ${selectedOptions.some((selectedOption) => selectedOption.label === option.label && selectedOption.questionId === question.id) ? "bg-[#F9FAFB]" : "bg-white"} transition-all duration-300 ease-in-out hover:bg-[#F9FAFB]`}
+                  >
+                    <Checkbox
+                      key={option.label}
+                      name={option.label}
+                      value={option.label}
+                      checked={selectedOptions.some(
+                        (selectedOption) =>
+                          selectedOption.label === option.label &&
+                          selectedOption.questionId === question.id,
+                      )}
+                      onChange={() => handleSelect(option.label, question.id)}
+                    >
+                      {option.label}
+                    </Checkbox>
+                  </label>
+                ))}
+              </CheckboxGroup>
+            </ScrollShadow>
           </div>
         ) : null,
       )}
