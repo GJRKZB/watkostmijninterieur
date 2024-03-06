@@ -6,7 +6,7 @@ import Providers from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Wat kost mijn interieur?",
+  title: "Watkostmijninterieur.nl",
   description:
     "Maak gebruik van onze tool om de kosten van je interieur te berekenen",
 };

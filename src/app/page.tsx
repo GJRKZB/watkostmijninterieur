@@ -4,6 +4,18 @@ import { useState } from "react";
 import { Question } from "@/utils/question";
 import Card from "./components/questionnaire/card";
 
+export interface IContactDetails {
+  name: string;
+  email: string;
+  phone?: string;
+}
+
+const initContactDetails: IContactDetails = {
+  name: "",
+  email: "",
+  phone: "",
+};
+
 export default function Home() {
   const [selectedOptions, setSelectedOptions] = useState<
     { label: string; questionId: number }[]
@@ -13,6 +25,8 @@ export default function Home() {
   const [answers, setAnswers] = useState<
     { questionTitle: string; selectedOptions: string[] }[]
   >([]);
+  const [contactDetails, setContactDetails] =
+    useState<IContactDetails>(initContactDetails);
 
   const handleNextQuestion = () => {
     if (questionIndex < Question.length - 1) {
@@ -50,6 +64,10 @@ export default function Home() {
     }
   };
 
+  const handleContactDetails = (newContactDetails: IContactDetails) => {
+    setContactDetails(newContactDetails);
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -68,6 +86,7 @@ export default function Home() {
     setAnswers(questionsAndSelectedOptions);
     setIsSubmitted(true);
 
+    console.log(contactDetails);
     console.log(questionsAndSelectedOptions);
   };
 
@@ -82,6 +101,8 @@ export default function Home() {
         questionIndex={questionIndex}
         isSubmitted={isSubmitted}
         answers={answers}
+        handleContactDetails={handleContactDetails}
+        contactDetails={contactDetails}
       />
     </div>
   );

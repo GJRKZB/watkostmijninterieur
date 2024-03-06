@@ -1,8 +1,13 @@
-import { ICardProps } from "./card";
 import { Question } from "@/utils/question";
 import { CheckboxGroup, Checkbox, ScrollShadow } from "@nextui-org/react";
 
-const Selection: React.FC<ICardProps> = ({
+export interface ISelectionProps {
+  handleSelect: (optionlabel: string, questionId: number) => void;
+  selectedOptions: Array<{ label: string; questionId: number }>;
+  questionIndex: number;
+}
+
+const Selection: React.FC<ISelectionProps> = ({
   handleSelect,
   selectedOptions,
   questionIndex,
