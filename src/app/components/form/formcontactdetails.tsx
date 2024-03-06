@@ -18,7 +18,7 @@ const FormContactDetails: React.FC<IFormInputProps> = ({
   };
 
   return (
-    <div className="flex flex-col  justify-center gap-3">
+    <div className="flex flex-col justify-center gap-3">
       <h2 className="text-xl font-bold text-[#101828]">Contact Details</h2>
       <Input
         type="text"
@@ -28,8 +28,9 @@ const FormContactDetails: React.FC<IFormInputProps> = ({
         label="Name"
         value={contactDetails.name}
         onChange={handleChange}
+        errorMessage={errors?.name}
+        isInvalid={!!errors?.name}
       />
-      {errors?.name && <p className="text-red-500">{errors.name}</p>}
       <Input
         type="email"
         isRequired
@@ -38,8 +39,9 @@ const FormContactDetails: React.FC<IFormInputProps> = ({
         label="Email"
         value={contactDetails.email}
         onChange={handleChange}
+        errorMessage={errors?.email}
+        isInvalid={!!errors?.email}
       />
-      {errors?.email && <p className="text-red-500">{errors.email}</p>}
       <Input
         type="tel"
         name="phone"

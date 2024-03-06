@@ -67,6 +67,12 @@ export default function Home() {
 
   const handleContactDetails = (newContactDetails: IContactDetails) => {
     setContactDetails(newContactDetails);
+
+    SetErrors((prevErrors) => ({
+      ...prevErrors,
+      name: "",
+      email: "",
+    }));
   };
 
   const validationContactDetails = () => {
@@ -101,12 +107,11 @@ export default function Home() {
       console.log("Form Submitted");
       setAnswers(questionsAndSelectedOptions);
       setIsSubmitted(true);
+      console.log(contactDetails);
+      console.log(questionsAndSelectedOptions);
     } else {
       SetErrors(contactFormErrors);
     }
-
-    console.log(contactDetails);
-    console.log(questionsAndSelectedOptions);
   };
 
   return (
