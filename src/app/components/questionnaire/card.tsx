@@ -1,7 +1,10 @@
 import Selection from "./selection";
 import Completion from "./completion";
+import FormContactDetails from "../form/formcontactdetails";
 import { Question } from "@/utils/question";
+import { IContactDetails } from "@/app/page";
 import { Button } from "@nextui-org/react";
+import Submit from "../form/submit";
 
 export interface ICardProps {
   handleNextQuestion: () => void;
@@ -12,6 +15,9 @@ export interface ICardProps {
   questionIndex: number;
   isSubmitted?: boolean;
   answers?: { questionTitle: string; selectedOptions: string[] }[];
+  contactDetails: IContactDetails;
+  handleContactDetails: (newContactDetails: IContactDetails) => void;
+  errors?: Partial<IContactDetails>;
 }
 
 const Card: React.FC<ICardProps> = ({
@@ -23,24 +29,29 @@ const Card: React.FC<ICardProps> = ({
   questionIndex,
   isSubmitted,
   answers,
+  handleContactDetails,
+  contactDetails,
+  errors,
 }) => {
   const isLastQuestion = questionIndex === Question.length - 1;
 
   return (
     <div className="flex h-full w-9/12 max-w-[796px] flex-col justify-center gap-4">
       <div className="flex flex-col gap-4 rounded-lg bg-white p-8 shadow-lg">
-        {!isSubmitted ? (
+        {!isLastQuestion && !isSubmitted ? (
           <Selection
-            handleNextQuestion={handleNextQuestion}
-            handleBackQuestion={handleBackQuestion}
             handleSelect={handleSelect}
-            handleSubmit={handleSubmit}
             selectedOptions={selectedOptions}
             questionIndex={questionIndex}
           />
-        ) : (
-          <Completion answers={answers} />
-        )}
+        ) : !isSubmitted ? (
+          <FormContactDetails
+            contactDetails={contactDetails}
+            handleContactDetails={handleContactDetails}
+            errors={errors}
+          />
+        ) : null}
+        {isSubmitted && <Completion answers={answers} />}
       </div>
       {!isSubmitted && (
         <div className="flex justify-between gap-4 rounded-lg bg-white p-4 shadow-lg">
@@ -62,15 +73,7 @@ const Card: React.FC<ICardProps> = ({
               Next
             </Button>
           ) : (
-            <form onSubmit={handleSubmit}>
-              <Button
-                className="ml-auto mr-0 w-28 rounded-lg bg-[#020246] text-white shadow-lg"
-                size="lg"
-                type="submit"
-              >
-                Submit
-              </Button>
-            </form>
+            <Submit handleSubmit={handleSubmit} />
           )}
         </div>
       )}
