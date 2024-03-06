@@ -27,6 +27,7 @@ export default function Home() {
   >([]);
   const [contactDetails, setContactDetails] =
     useState<IContactDetails>(initContactDetails);
+  const [errors, SetErrors] = useState<Partial<IContactDetails>>({});
 
   const handleNextQuestion = () => {
     if (questionIndex < Question.length - 1) {
@@ -68,6 +69,17 @@ export default function Home() {
     setContactDetails(newContactDetails);
   };
 
+  const validationContactDetails = () => {
+    const newErrors: Partial<IContactDetails> = {};
+    if (!contactDetails.name) {
+      newErrors.name = "Name is required";
+    }
+    if (!contactDetails.email || contactDetails.email.length < 3) {
+      newErrors.email = "Email is required";
+    }
+    return newErrors;
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -83,8 +95,15 @@ export default function Home() {
       };
     }).filter((q) => q.selectedOptions.length > 0);
 
-    setAnswers(questionsAndSelectedOptions);
-    setIsSubmitted(true);
+    const contactFormErrors = validationContactDetails();
+
+    if (Object.keys(contactFormErrors).length === 0) {
+      console.log("Form Submitted");
+      setAnswers(questionsAndSelectedOptions);
+      setIsSubmitted(true);
+    } else {
+      SetErrors(contactFormErrors);
+    }
 
     console.log(contactDetails);
     console.log(questionsAndSelectedOptions);
@@ -103,6 +122,7 @@ export default function Home() {
         answers={answers}
         handleContactDetails={handleContactDetails}
         contactDetails={contactDetails}
+        errors={errors}
       />
     </div>
   );
