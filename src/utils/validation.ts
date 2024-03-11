@@ -1,4 +1,3 @@
-import e from "express";
 import { IContactFormData, IErrors } from "../models/user";
 
 export const validateContactFormData = (data: IContactFormData): IErrors => {
