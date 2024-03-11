@@ -1,17 +1,23 @@
 import { Schema, model, models } from "mongoose";
 
-export interface IUser {
+export interface IContactFormData {
   name: string;
   email: string;
-  telephone?: string;
+  phone?: string;
 }
 
-const UserSchema = new Schema<IUser>({
+export interface IErrors {
+  name?: string;
+  email?: string;
+  phone?: string;
+}
+
+const UserSchema = new Schema<IContactFormData>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  telephone: { type: String, required: false },
+  phone: { type: String, required: false },
 });
 
-const User = models.User || model<IUser>("User", UserSchema);
+const User = models.User || model<IContactFormData>("User", UserSchema);
 
 export default User;

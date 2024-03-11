@@ -1,8 +1,8 @@
 import Selection from "./selection";
 import Completion from "./completion";
 import FormContactDetails from "../form/formcontactdetails";
+import { IContactFormData, IErrors } from "@/models/user";
 import { Question } from "@/utils/question";
-import { IContactDetails } from "@/app/page";
 import { Button } from "@nextui-org/react";
 import Submit from "../form/submit";
 
@@ -15,9 +15,9 @@ export interface ICardProps {
   questionIndex: number;
   isSubmitted?: boolean;
   answers?: { questionTitle: string; selectedOptions: string[] }[];
-  contactDetails: IContactDetails;
-  handleContactDetails: (newContactDetails: IContactDetails) => void;
-  errors?: Partial<IContactDetails>;
+  handleContactDetails: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  contactFormData: IContactFormData;
+  errors: IErrors;
 }
 
 const Card: React.FC<ICardProps> = ({
@@ -30,7 +30,7 @@ const Card: React.FC<ICardProps> = ({
   isSubmitted,
   answers,
   handleContactDetails,
-  contactDetails,
+  contactFormData,
   errors,
 }) => {
   const isLastQuestion = questionIndex === Question.length - 1;
@@ -46,7 +46,7 @@ const Card: React.FC<ICardProps> = ({
           />
         ) : !isSubmitted ? (
           <FormContactDetails
-            contactDetails={contactDetails}
+            contactFormData={contactFormData}
             handleContactDetails={handleContactDetails}
             errors={errors}
           />

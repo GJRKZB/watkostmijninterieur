@@ -1,22 +1,17 @@
 import { Input } from "@nextui-org/react";
-import { IContactDetails } from "@/app/page";
+import { IContactFormData, IErrors } from "@/models/user";
 
 interface IFormInputProps {
-  contactDetails: IContactDetails;
-  handleContactDetails: (newContactDetails: IContactDetails) => void;
-  errors?: Partial<IContactDetails>;
+  handleContactDetails: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  contactFormData: IContactFormData;
+  errors: IErrors;
 }
 
 const FormContactDetails: React.FC<IFormInputProps> = ({
-  contactDetails,
+  contactFormData,
   handleContactDetails,
   errors,
 }) => {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    handleContactDetails({ ...contactDetails, [name]: value });
-  };
-
   return (
     <div className="flex flex-col justify-center gap-3">
       <h2 className="text-xl font-bold text-[#101828]">Contact Details</h2>
@@ -26,8 +21,8 @@ const FormContactDetails: React.FC<IFormInputProps> = ({
         name="name"
         variant="bordered"
         label="Name"
-        value={contactDetails.name}
-        onChange={handleChange}
+        value={contactFormData.name}
+        onChange={handleContactDetails}
         errorMessage={errors?.name}
         isInvalid={!!errors?.name}
       />
@@ -37,8 +32,8 @@ const FormContactDetails: React.FC<IFormInputProps> = ({
         name="email"
         variant="bordered"
         label="Email"
-        value={contactDetails.email}
-        onChange={handleChange}
+        value={contactFormData.email}
+        onChange={handleContactDetails}
         errorMessage={errors?.email}
         isInvalid={!!errors?.email}
       />
@@ -47,8 +42,8 @@ const FormContactDetails: React.FC<IFormInputProps> = ({
         name="phone"
         variant="bordered"
         label="Phone"
-        value={contactDetails?.phone}
-        onChange={handleChange}
+        value={contactFormData?.phone}
+        onChange={handleContactDetails}
       />
     </div>
   );

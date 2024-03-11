@@ -2,19 +2,8 @@
 
 import { useState } from "react";
 import { Question } from "@/utils/question";
+import { IContactFormData, IErrors } from "@/models/user";
 import Card from "./components/questionnaire/card";
-
-export interface IContactDetails {
-  name: string;
-  email: string;
-  phone?: string;
-}
-
-const initContactDetails: IContactDetails = {
-  name: "",
-  email: "",
-  phone: "",
-};
 
 export default function Home() {
   const [selectedOptions, setSelectedOptions] = useState<
@@ -25,9 +14,14 @@ export default function Home() {
   const [answers, setAnswers] = useState<
     { questionTitle: string; selectedOptions: string[] }[]
   >([]);
-  const [contactDetails, setContactDetails] =
-    useState<IContactDetails>(initContactDetails);
-  const [errors, SetErrors] = useState<Partial<IContactDetails>>({});
+
+  const [contactFormData, setContactFormData] = useState<IContactFormData>({
+    name: "",
+    email: "",
+    phone: "",
+  });
+
+  const [errors, SetErrors] = useState<IErrors>({});
 
   const handleNextQuestion = () => {
     if (questionIndex < Question.length - 1) {
@@ -65,28 +59,36 @@ export default function Home() {
     }
   };
 
-  const handleContactDetails = (newContactDetails: IContactDetails) => {
-    setContactDetails(newContactDetails);
+  const handleContactDetails = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setContactFormData({
+      ...contactFormData,
+      [event.target.name]: event.target.value,
+    });
 
-    SetErrors((prevErrors) => ({
-      ...prevErrors,
-      name: "",
-      email: "",
-    }));
+    if (errors[event.target.name as keyof IErrors]) {
+      SetErrors({
+        ...errors,
+        [event.target.name]: "",
+      });
+    }
   };
 
-  const validationContactDetails = () => {
-    const newErrors: Partial<IContactDetails> = {};
-    if (!contactDetails.name) {
-      newErrors.name = "Name is required";
+  const validationContactDetails = (): IErrors => {
+    const errors: IErrors = {};
+    if (!contactFormData.name) {
+      errors.name = "Name is required";
+    } else if (contactFormData.name.length < 3) {
+      errors.name = "Name must be at least 3 characters";
     }
-    if (!contactDetails.email || contactDetails.email.length < 3) {
-      newErrors.email = "Email is required";
+    if (!contactFormData.email) {
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(contactFormData.email)) {
+      errors.email = "Email address is invalid";
     }
-    return newErrors;
+    return errors;
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const questionsAndSelectedOptions = Question.map((question) => {
@@ -101,16 +103,31 @@ export default function Home() {
       };
     }).filter((q) => q.selectedOptions.length > 0);
 
-    const contactFormErrors = validationContactDetails();
+    const errors = validationContactDetails();
+    if (Object.keys(errors).length === 0) {
+      try {
+        const response = await fetch("/api/contactform", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(contactFormData),
+        });
 
-    if (Object.keys(contactFormErrors).length === 0) {
-      console.log("Form Submitted");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error("There was a problem with the fetch operation: ", error);
+      }
+      console.log("Form data: ", contactFormData);
       setAnswers(questionsAndSelectedOptions);
       setIsSubmitted(true);
-      console.log(contactDetails);
-      console.log(questionsAndSelectedOptions);
     } else {
-      SetErrors(contactFormErrors);
+      SetErrors(errors);
     }
   };
 
@@ -126,7 +143,7 @@ export default function Home() {
         isSubmitted={isSubmitted}
         answers={answers}
         handleContactDetails={handleContactDetails}
-        contactDetails={contactDetails}
+        contactFormData={contactFormData}
         errors={errors}
       />
     </div>
