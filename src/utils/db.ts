@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const connect = async (): Promise<void> => {
+const connectDB = async (): Promise<void> => {
   const mongoUri: string = process.env.MONGO_URI_DEV!;
 
   if (!mongoUri) {
@@ -20,4 +20,4 @@ const connect = async (): Promise<void> => {
   }
 };
 
-export default connect;
+export default connectDB;
