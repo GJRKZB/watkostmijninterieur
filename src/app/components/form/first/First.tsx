@@ -6,7 +6,7 @@ interface IFirstStepProps {
   handleRoomSelection: (room: string) => void;
 }
 
-export const FirstStep: React.FC<IFirstStepProps> = ({
+export const First: React.FC<IFirstStepProps> = ({
   questions,
   formData,
   handleRoomSelection,

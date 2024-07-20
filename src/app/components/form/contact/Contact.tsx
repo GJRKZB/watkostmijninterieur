@@ -5,7 +5,7 @@ interface IContactDetailProps {
   handleContactDetails: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const ContactDetails: React.FC<IContactDetailProps> = ({
+export const Contact: React.FC<IContactDetailProps> = ({
   formData,
   handleContactDetails,
 }) => {

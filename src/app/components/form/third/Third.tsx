@@ -6,7 +6,7 @@ interface IThirdStepProps {
   handleSizeSelection: (room: string, size: string) => void;
 }
 
-export const ThirdStep: React.FC<IThirdStepProps> = ({
+export const Third: React.FC<IThirdStepProps> = ({
   questions,
   formData,
   handleSizeSelection,

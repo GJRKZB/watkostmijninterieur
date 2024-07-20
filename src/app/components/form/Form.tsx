@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { IFormData } from "@/app/types/types";
-import { FirstStep } from "./first-step/FirstStep";
-import { SecondStep } from "./second-step/SecondStep";
-import { ThirdStep } from "./third-step/ThirdStep";
 import { questions } from "@/app/data/questions";
-import { ContactDetails } from "./contact-details/ContactDetails";
+import { IFormData } from "@/app/types/types";
+import { First } from "./first/First";
+import { Second } from "./second/Second";
+import { Third } from "./third/Third";
+import { Contact } from "./contact/Contact";
 
 const Form: React.FC = () => {
   const [formData, setFormData] = useState<IFormData>({
@@ -15,6 +15,7 @@ const Form: React.FC = () => {
     phoneNumber: "",
     choices: [],
   });
+  const [step, setStep] = useState(0);
 
   const handleRoomSelection = (room: string) => {
     setFormData((prevData) => {
@@ -59,30 +60,67 @@ const Form: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("FormData:", formData);
+    setStep(step + 1);
   };
+
+  const renderStep = () => {
+    switch (step) {
+      case 0:
+        return (
+          <First
+            questions={questions}
+            formData={formData}
+            handleRoomSelection={handleRoomSelection}
+          />
+        );
+      case 1:
+        return (
+          <Second
+            questions={questions}
+            formData={formData}
+            handleFloorSelection={handleFloorSelection}
+          />
+        );
+      case 2:
+        return (
+          <Third
+            questions={questions}
+            formData={formData}
+            handleSizeSelection={handleSizeSelection}
+          />
+        );
+      case 3:
+        return (
+          <Contact
+            formData={formData}
+            handleContactDetails={handleContactDetails}
+          />
+        );
+      default:
+        return <div>Thank you for submitting the form!</div>;
+    }
+  };
+
+  const renderNavigationButtons = () => (
+    <div>
+      {step > 0 && step < 4 && (
+        <button type="button" onClick={() => setStep(step - 1)}>
+          Back
+        </button>
+      )}
+      {step < 3 && (
+        <button type="button" onClick={() => setStep(step + 1)}>
+          Next
+        </button>
+      )}
+      {step === 3 && <button type="submit">Submit</button>}
+    </div>
+  );
 
   return (
     <form onSubmit={handleSubmit}>
-      <FirstStep
-        questions={questions}
-        formData={formData}
-        handleRoomSelection={handleRoomSelection}
-      />
-      <SecondStep
-        questions={questions}
-        formData={formData}
-        handleFloorSelection={handleFloorSelection}
-      />
-      <ThirdStep
-        questions={questions}
-        formData={formData}
-        handleSizeSelection={handleSizeSelection}
-      />
-      <ContactDetails
-        formData={formData}
-        handleContactDetails={handleContactDetails}
-      />
-      <button type="submit">Submit</button>
+      {renderStep()}
+      {renderNavigationButtons()}
     </form>
   );
 };

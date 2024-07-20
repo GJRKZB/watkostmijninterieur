@@ -6,7 +6,7 @@ interface ISecondStepProps {
   handleFloorSelection: (room: string, floor: string) => void;
 }
 
-export const SecondStep: React.FC<ISecondStepProps> = ({
+export const Second: React.FC<ISecondStepProps> = ({
   questions,
   formData,
   handleFloorSelection,
