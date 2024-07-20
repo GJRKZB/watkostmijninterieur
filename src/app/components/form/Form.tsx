@@ -7,6 +7,7 @@ import { First } from "./first/First";
 import { Second } from "./second/Second";
 import { Third } from "./third/Third";
 import { Contact } from "./contact/Contact";
+import axios from "axios";
 
 const Form: React.FC = () => {
   const [formData, setFormData] = useState<IFormData>({
@@ -57,9 +58,23 @@ const Form: React.FC = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("FormData:", formData);
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      if (!apiUrl) {
+        throw new Error("API URL is not defined");
+      }
+      const response = await axios.post(apiUrl, formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(formData);
+      console.log("Success:", response.data);
+    } catch (error) {
+      console.log(error);
+    }
     setStep(step + 1);
   };
 
