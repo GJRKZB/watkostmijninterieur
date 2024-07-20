@@ -8,6 +8,8 @@ import { Second } from "./second/Second";
 import { Third } from "./third/Third";
 import { Contact } from "./contact/Contact";
 import axios from "axios";
+import { Fourth } from "./fourth/Fourth";
+import { Fifth } from "./fifth/Fifth";
 
 const Form: React.FC = () => {
   const [formData, setFormData] = useState<IFormData>({
@@ -53,6 +55,30 @@ const Form: React.FC = () => {
     }));
   };
 
+  const handleWindowDecorationSelection = (
+    room: string,
+    windowDecoration: string
+  ) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      choices: prevData.choices.map((c) =>
+        c.room === room ? { ...c, windowDecoration } : c
+      ),
+    }));
+  };
+
+  const handleWindowDecorationTypeSelection = (
+    room: string,
+    windowDecorationType: string
+  ) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      choices: prevData.choices.map((c) =>
+        c.room === room ? { ...c, windowDecorationType } : c
+      ),
+    }));
+  };
+
   const handleContactDetails = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -60,21 +86,22 @@ const Form: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      if (!apiUrl) {
-        throw new Error("API URL is not defined");
-      }
-      const response = await axios.post(apiUrl, formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(formData);
-      console.log("Success:", response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    console.log(formData);
+    // try {
+    //   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    //   if (!apiUrl) {
+    //     throw new Error("API URL is not defined");
+    //   }
+    //   const response = await axios.post(apiUrl, formData, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   });
+    //   console.log(formData);
+    //   console.log("Success:", response.data);
+    // } catch (error) {
+    //   console.log(error);
+    // }
     setStep(step + 1);
   };
 
@@ -106,6 +133,24 @@ const Form: React.FC = () => {
         );
       case 3:
         return (
+          <Fourth
+            questions={questions}
+            formData={formData}
+            handleWindowDecorationSelection={handleWindowDecorationSelection}
+          />
+        );
+      case 4:
+        return (
+          <Fifth
+            questions={questions}
+            formData={formData}
+            handleWindowDecorationTypeSelection={
+              handleWindowDecorationTypeSelection
+            }
+          />
+        );
+      case 5:
+        return (
           <Contact
             formData={formData}
             handleContactDetails={handleContactDetails}
@@ -116,19 +161,21 @@ const Form: React.FC = () => {
     }
   };
 
+  console.log(step);
+
   const renderNavigationButtons = () => (
     <div>
-      {step > 0 && step < 4 && (
+      {step > 0 && step <= 5 && (
         <button type="button" onClick={() => setStep(step - 1)}>
           Back
         </button>
       )}
-      {step < 3 && (
+      {step < 5 && (
         <button type="button" onClick={() => setStep(step + 1)}>
           Next
         </button>
       )}
-      {step === 3 && <button type="submit">Submit</button>}
+      {step === 5 && <button type="submit">Submit</button>}
     </div>
   );
 
