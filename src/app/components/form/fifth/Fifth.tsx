@@ -1,4 +1,5 @@
-import { IFormData, IQuestionItem } from "@/app/types/types";
+import React from "react";
+import { IFormData, IQuestionItem, IRoomChoice } from "@/app/types/types";
 
 interface IFifthStepProps {
   questions: IQuestionItem[];
@@ -9,41 +10,66 @@ interface IFifthStepProps {
   ) => void;
 }
 
+const Option: React.FC<{
+  option: string;
+  isSelected: boolean;
+  onSelect: () => void;
+}> = ({ option, isSelected, onSelect }) => (
+  <label>
+    <input type="checkbox" checked={isSelected} onChange={onSelect} />
+    {option}
+  </label>
+);
+
+const QuestionBlock: React.FC<{
+  question: IQuestionItem;
+  choice: IRoomChoice;
+  onSelect: (room: string, option: string) => void;
+}> = ({ question, choice, onSelect }) => (
+  <div>
+    <h3>{question.text}</h3>
+    <h3>{choice.room}</h3>
+    <div>
+      {question.options.map((option) => (
+        <Option
+          key={option}
+          option={option}
+          isSelected={choice.windowDecorationType === option}
+          onSelect={() => onSelect(choice.room, option)}
+        />
+      ))}
+    </div>
+  </div>
+);
+
 export const Fifth: React.FC<IFifthStepProps> = ({
   questions,
   formData,
   handleWindowDecorationTypeSelection,
 }) => {
+  const getWindowDecorationQuestion = (windowDecoration: string) =>
+    questions.find(
+      (q) =>
+        q.dependsOn?.questionId === 3 &&
+        Array.isArray(q.dependsOn.value) &&
+        q.dependsOn.value.includes(windowDecoration)
+    );
+
   return (
     <div>
       {formData.choices.map((choice) => {
-        const windowDecorationQuestion = questions.find(
-          (q) =>
-            q.dependsOn?.questionId === 3 &&
-            q.dependsOn.value === choice.windowDecoration
-        );
-        if (windowDecorationQuestion) {
-          return (
-            <div key={choice.room}>
-              <h3>{windowDecorationQuestion.text}</h3>
-              <h3>{choice.room}</h3>
-              <div key={choice.room}>
-                {windowDecorationQuestion.options.map((option) => (
-                  <label key={option}>
-                    <input
-                      type="checkbox"
-                      checked={choice.windowDecorationType === option}
-                      onChange={() =>
-                        handleWindowDecorationTypeSelection(choice.room, option)
-                      }
-                    />
-                    {option}
-                  </label>
-                ))}
-              </div>
-            </div>
-          );
-        }
+        const windowDecoration = choice.windowDecoration ?? "";
+        const windowDecorationQuestion =
+          getWindowDecorationQuestion(windowDecoration);
+
+        return windowDecorationQuestion ? (
+          <QuestionBlock
+            key={choice.room}
+            question={windowDecorationQuestion}
+            choice={choice}
+            onSelect={handleWindowDecorationTypeSelection}
+          />
+        ) : null;
       })}
     </div>
   );

@@ -11,6 +11,7 @@ import axios from "axios";
 import { Fourth } from "./fourth/Fourth";
 import { Fifth } from "./fifth/Fifth";
 import { Sixth } from "./sixth/Sixth";
+import { Seventh } from "./seventh/Seventh";
 
 const Form: React.FC = () => {
   const [formData, setFormData] = useState<IFormData>({
@@ -85,6 +86,18 @@ const Form: React.FC = () => {
       ...prevData,
       choices: prevData.choices.map((c) =>
         c.room === room ? { ...c, amountWindows } : c
+      ),
+    }));
+  };
+
+  const handleWindowDecorationSizeSelection = (
+    room: string,
+    windowSizes: string
+  ) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      choices: prevData.choices.map((choice) =>
+        choice.room === room ? { ...choice, windowSizes } : choice
       ),
     }));
   };
@@ -169,6 +182,16 @@ const Form: React.FC = () => {
         );
       case 6:
         return (
+          <Seventh
+            questions={questions}
+            formData={formData}
+            handleWindowDecorationSizeSelection={
+              handleWindowDecorationSizeSelection
+            }
+          />
+        );
+      case 7:
+        return (
           <Contact
             formData={formData}
             handleContactDetails={handleContactDetails}
@@ -179,21 +202,19 @@ const Form: React.FC = () => {
     }
   };
 
-  console.log(formData);
-
   const renderNavigationButtons = () => (
     <div>
-      {step > 0 && step <= 5 && (
+      {step > 0 && step <= 7 && (
         <button type="button" onClick={() => setStep(step - 1)}>
           Back
         </button>
       )}
-      {step < 5 && (
+      {step < 7 && (
         <button type="button" onClick={() => setStep(step + 1)}>
           Next
         </button>
       )}
-      {step === 5 && <button type="submit">Submit</button>}
+      {step === 7 && <button type="submit">Submit</button>}
     </div>
   );
 

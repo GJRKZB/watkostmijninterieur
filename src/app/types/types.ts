@@ -9,9 +9,10 @@ export interface IQuestionItem {
   id: number;
   text: string;
   options: string[];
+  closestValueText?: string;
   dependsOn?: {
     questionId: number;
-    value: string;
+    value: string[];
   };
 }
 
@@ -22,4 +23,5 @@ export interface IRoomChoice {
   windowDecoration?: string;
   windowDecorationType?: string;
   amountWindows?: string;
+  windowSizes?: string;
 }
