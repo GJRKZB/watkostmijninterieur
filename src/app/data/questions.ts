@@ -28,8 +28,9 @@ export const questions: IQuestionItem[] = [
       "Aluminum Blinds",
       "Duet Curtains",
       "Pleated Curtains",
-      "Roller Blinds",
+      // "Roller Blinds",
       "Inbetweens",
+      "No window decoration needed",
     ],
   },
   {
@@ -49,5 +50,28 @@ export const questions: IQuestionItem[] = [
     text: "Which size wooden blinds would you like?",
     options: ["50mm", "60mm"],
     dependsOn: { questionId: 3, value: "Wooden Blinds" },
+  },
+  {
+    id: 7,
+    text: "Which type of quality curtains?",
+    options: ["Essential", "Comfort", "Premium"],
+    dependsOn: { questionId: 3, value: "Curtains" },
+  },
+  {
+    id: 8,
+    text: "Which size Duet Curtains would you like?",
+    options: ["25mm", "32mm"],
+    dependsOn: { questionId: 3, value: "Duet Curtains" },
+  },
+  {
+    id: 9,
+    text: "Which size pleated curtains would you like?",
+    options: ["20mm", "32mm"],
+    dependsOn: { questionId: 3, value: "Pleated Curtains" },
+  },
+  {
+    id: 10,
+    text: "How many windows do you like to decorate?",
+    options: ["1 - 3", "4 - 6", "7 - 10"],
   },
 ];

@@ -21,4 +21,5 @@ export interface IRoomChoice {
   size?: string;
   windowDecoration?: string;
   windowDecorationType?: string;
+  amountWindows?: string;
 }

@@ -26,8 +26,8 @@ export const Fifth: React.FC<IFifthStepProps> = ({
           return (
             <div key={choice.room}>
               <h3>{windowDecorationQuestion.text}</h3>
+              <h3>{choice.room}</h3>
               <div key={choice.room}>
-                <h3>{choice.room}</h3>
                 {windowDecorationQuestion.options.map((option) => (
                   <label key={option}>
                     <input

@@ -10,6 +10,7 @@ import { Contact } from "./contact/Contact";
 import axios from "axios";
 import { Fourth } from "./fourth/Fourth";
 import { Fifth } from "./fifth/Fifth";
+import { Sixth } from "./sixth/Sixth";
 
 const Form: React.FC = () => {
   const [formData, setFormData] = useState<IFormData>({
@@ -75,6 +76,15 @@ const Form: React.FC = () => {
       ...prevData,
       choices: prevData.choices.map((c) =>
         c.room === room ? { ...c, windowDecorationType } : c
+      ),
+    }));
+  };
+
+  const handleWindowAmountSelection = (room: string, amountWindows: string) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      choices: prevData.choices.map((c) =>
+        c.room === room ? { ...c, amountWindows } : c
       ),
     }));
   };
@@ -151,6 +161,14 @@ const Form: React.FC = () => {
         );
       case 5:
         return (
+          <Sixth
+            questions={questions}
+            formData={formData}
+            handleWindowAmountSelection={handleWindowAmountSelection}
+          />
+        );
+      case 6:
+        return (
           <Contact
             formData={formData}
             handleContactDetails={handleContactDetails}
@@ -161,7 +179,7 @@ const Form: React.FC = () => {
     }
   };
 
-  console.log(step);
+  console.log(formData);
 
   const renderNavigationButtons = () => (
     <div>
