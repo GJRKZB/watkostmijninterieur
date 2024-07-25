@@ -108,4 +108,35 @@ export const questions: IQuestionItem[] = [
       value: ["Curtains", "Inbetweens"],
     },
   },
+  {
+    id: 13,
+    text: "Which furniture would you like choose?",
+    options: [
+      "Couch",
+      "Armchair",
+      "Coffee table",
+      "Dining room table",
+      "Dining room chair",
+      "TV furniture",
+      "Carpet",
+      "No furniture",
+    ],
+  },
+  {
+    id: 14,
+    text: "Which type of quality furniture do you prefer?",
+    options: ["Budget", "Exclusive"],
+    dependsOn: {
+      questionId: 13,
+      value: [
+        "Couch",
+        "Armchair",
+        "Coffee table",
+        "Dining room table",
+        "Dining room chair",
+        "TV furniture",
+        "Carpet",
+      ],
+    },
+  },
 ];
