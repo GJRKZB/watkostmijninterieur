@@ -24,4 +24,6 @@ export interface IRoomChoice {
   windowDecorationType?: string;
   amountWindows?: string;
   windowSizes?: string;
+  furniture?: string;
+  furnitureType?: string;
 }

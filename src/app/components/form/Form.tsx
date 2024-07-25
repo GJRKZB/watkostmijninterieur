@@ -12,6 +12,8 @@ import { Fourth } from "./fourth/Fourth";
 import { Fifth } from "./fifth/Fifth";
 import { Sixth } from "./sixth/Sixth";
 import { Seventh } from "./seventh/Seventh";
+import { Eight } from "./eight/Eight";
+import { Ninth } from "./nineth/Nineth";
 
 const Form: React.FC = () => {
   const [formData, setFormData] = useState<IFormData>({
@@ -98,6 +100,27 @@ const Form: React.FC = () => {
       ...prevData,
       choices: prevData.choices.map((choice) =>
         choice.room === room ? { ...choice, windowSizes } : choice
+      ),
+    }));
+  };
+
+  const handleFurnitureSelection = (room: string, furniture: string) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      choices: prevData.choices.map((choice) =>
+        choice.room === room ? { ...choice, furniture } : choice
+      ),
+    }));
+  };
+
+  const handleFurnitureTypeSelection = (
+    room: string,
+    furnitureType: string
+  ) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      choices: prevData.choices.map((choice) =>
+        choice.room === room ? { ...choice, furnitureType } : choice
       ),
     }));
   };
@@ -192,6 +215,22 @@ const Form: React.FC = () => {
         );
       case 7:
         return (
+          <Eight
+            questions={questions}
+            formData={formData}
+            handleFurnitureSelection={handleFurnitureSelection}
+          />
+        );
+      case 8:
+        return (
+          <Ninth
+            questions={questions}
+            formData={formData}
+            handleFurnitureTypeSelection={handleFurnitureTypeSelection}
+          />
+        );
+      case 9:
+        return (
           <Contact
             formData={formData}
             handleContactDetails={handleContactDetails}
@@ -204,17 +243,17 @@ const Form: React.FC = () => {
 
   const renderNavigationButtons = () => (
     <div>
-      {step > 0 && step <= 7 && (
+      {step > 0 && step <= 8 && (
         <button type="button" onClick={() => setStep(step - 1)}>
           Back
         </button>
       )}
-      {step < 7 && (
+      {step < 9 && (
         <button type="button" onClick={() => setStep(step + 1)}>
           Next
         </button>
       )}
-      {step === 7 && <button type="submit">Submit</button>}
+      {step === 9 && <button type="submit">Submit</button>}
     </div>
   );
 
