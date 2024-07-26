@@ -2,11 +2,12 @@
 
 import { createContext, useContext, useState } from "react";
 
-interface IRoom {
+export interface IRoom {
   name: string;
   floors: string[];
   sizes: string[];
   windowDecoration: string[];
+  windowDecorationDetails: string[];
 }
 
 interface IFormData {
@@ -29,6 +30,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
   const [formData, setFormData] = useState<IFormData>({ rooms: [] });
   const [currentStep, setCurrentStep] = useState(1);
 
+  console.log(formData);
   const updateFormData = (newData: Partial<IFormData>) => {
     setFormData((prevData) => ({ ...prevData, ...newData }));
   };
@@ -41,7 +43,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     setCurrentStep(Math.max(1, currentStep - 1));
   };
 
-  console.log(formData);
+  // console.log(formData);
 
   return (
     <FormContext.Provider

@@ -4,7 +4,7 @@ import { useFormContext } from "@/app/context/FormContext";
 import { Rooms } from "../FormSteps/Rooms/Rooms";
 import { Floors } from "../FormSteps/Floors/Floors";
 import { RoomSizes } from "../FormSteps/RoomSizes/RoomSizes";
-import { WindowDecoration } from "../FormSteps/WindowDecoration/WindowDecoration";
+import { WindowDecoration } from "../FormSteps/WindowDecorations/WindowDecoration";
 
 export const MultiStepForm: React.FC = () => {
   const { currentStep, nextStep, backStep } = useFormContext();

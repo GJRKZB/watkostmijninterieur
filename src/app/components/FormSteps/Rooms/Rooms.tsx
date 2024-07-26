@@ -13,6 +13,7 @@ export const Rooms: React.FC = () => {
         floors: [],
         sizes: [],
         windowDecoration: [],
+        windowDecorationDetails: [],
       });
     } else {
       updatedRooms = updatedRooms.filter((room) => room.name !== value);
@@ -21,10 +22,12 @@ export const Rooms: React.FC = () => {
     updateFormData({ rooms: updatedRooms });
   };
 
+  const rooms = ["Livingroom", "Bathroom", "Bedroom"];
+
   return (
     <div>
       <h1>Which rooms do you want to decorate?</h1>
-      {["Livingroom", "Bathroom", "Bedroom"].map((room) => (
+      {rooms.map((room) => (
         <label key={room}>
           <input
             type="checkbox"

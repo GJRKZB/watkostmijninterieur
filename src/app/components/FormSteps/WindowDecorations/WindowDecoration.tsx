@@ -1,24 +1,35 @@
 import { useFormContext } from "@/app/context/FormContext";
+import { WindowDecorationDetails } from "./WindowDecorationDetails/WindowDecorationDetails";
 
 export const WindowDecoration: React.FC = () => {
   const { formData, updateFormData } = useFormContext();
 
   const handleChange = (
     roomName: string,
-    windowDecorationType: string,
+    windowDecorationProduct: string,
     checked: boolean
   ) => {
     const updatedRooms = formData.rooms.map((room) => {
       if (room.name === roomName) {
         let updatedWindowDecorations = [...room.windowDecoration];
+        let updatedWindowDecorationDetails = [...room.windowDecorationDetails];
         if (checked) {
-          updatedWindowDecorations.push(windowDecorationType);
+          updatedWindowDecorations.push(windowDecorationProduct);
+          updatedWindowDecorationDetails.push(windowDecorationProduct);
         } else {
           updatedWindowDecorations = updatedWindowDecorations.filter(
-            (windowDecoration) => windowDecoration !== windowDecorationType
+            (windowDecoration) => windowDecoration !== windowDecorationProduct
           );
+          updatedWindowDecorationDetails =
+            updatedWindowDecorationDetails.filter(
+              (detail) => detail !== windowDecorationProduct
+            );
         }
-        return { ...room, windowDecoration: updatedWindowDecorations };
+        return {
+          ...room,
+          windowDecoration: updatedWindowDecorations,
+          windowDecorationDetails: updatedWindowDecorationDetails,
+        };
       }
       return room;
     });
@@ -26,7 +37,7 @@ export const WindowDecoration: React.FC = () => {
     updateFormData({ rooms: updatedRooms });
   };
 
-  const windowDecorationTypes = [
+  const windowDecorationProducts = [
     "Curtains",
     "Wooden Blinds",
     "Aluminum Blinds",
@@ -39,28 +50,31 @@ export const WindowDecoration: React.FC = () => {
 
   return (
     <div>
-      <h1>Which window decoration would you like choose?</h1>
+      <h1>Which window decoration would you like to choose?</h1>
       {formData.rooms.map((room) => (
         <div key={room.name}>
           <h2>{room.name}</h2>
-          {windowDecorationTypes.map((windowDecorationType) => (
-            <label key={windowDecorationType}>
+          {windowDecorationProducts.map((windowDecorationProduct) => (
+            <label key={windowDecorationProduct}>
               <input
                 type="checkbox"
                 name={`windowDecoration-${room.name}`}
-                value={windowDecorationType}
-                checked={room.windowDecoration.includes(windowDecorationType)}
+                value={windowDecorationProduct}
+                checked={room.windowDecoration.includes(
+                  windowDecorationProduct
+                )}
                 onChange={(e) =>
                   handleChange(
                     room.name,
-                    windowDecorationType,
+                    windowDecorationProduct,
                     e.target.checked
                   )
                 }
               />
-              {windowDecorationType}
+              {windowDecorationProduct}
             </label>
           ))}
+          <WindowDecorationDetails room={room} />
         </div>
       ))}
     </div>
