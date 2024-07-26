@@ -3,6 +3,8 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { Rooms } from "../FormSteps/Rooms/Rooms";
 import { Floors } from "../FormSteps/Floors/Floors";
+import { RoomSizes } from "../FormSteps/RoomSizes/RoomSizes";
+import { WindowDecoration } from "../FormSteps/WindowDecoration/WindowDecoration";
 
 export const MultiStepForm: React.FC = () => {
   const { currentStep, nextStep, backStep } = useFormContext();
@@ -13,6 +15,10 @@ export const MultiStepForm: React.FC = () => {
         return <Rooms />;
       case 2:
         return <Floors />;
+      case 3:
+        return <RoomSizes />;
+      case 4:
+        return <WindowDecoration />;
       default:
         return <div>Thank you for submitting the form!</div>;
     }

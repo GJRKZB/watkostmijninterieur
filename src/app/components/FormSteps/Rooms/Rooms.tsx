@@ -8,7 +8,12 @@ export const Rooms: React.FC = () => {
     let updatedRooms = [...formData.rooms];
 
     if (checked) {
-      updatedRooms.push({ name: value, floors: [] });
+      updatedRooms.push({
+        name: value,
+        floors: [],
+        sizes: [],
+        windowDecoration: [],
+      });
     } else {
       updatedRooms = updatedRooms.filter((room) => room.name !== value);
     }

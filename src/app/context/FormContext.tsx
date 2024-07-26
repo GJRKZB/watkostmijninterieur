@@ -5,6 +5,8 @@ import { createContext, useContext, useState } from "react";
 interface IRoom {
   name: string;
   floors: string[];
+  sizes: string[];
+  windowDecoration: string[];
 }
 
 interface IFormData {
