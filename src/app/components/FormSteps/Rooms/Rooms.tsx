@@ -5,50 +5,32 @@ export const Rooms: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
-    const currentFloors = formData.rooms || [];
+    let updatedRooms = [...formData.rooms];
 
     if (checked) {
-      updateFormData({ rooms: [...currentFloors, value] });
+      updatedRooms.push({ name: value, floors: [] });
     } else {
-      updateFormData({ rooms: currentFloors.filter((room) => room !== value) });
+      updatedRooms = updatedRooms.filter((room) => room.name !== value);
     }
-  };
 
-  console.log(formData);
+    updateFormData({ rooms: updatedRooms });
+  };
 
   return (
     <div>
-      <h1>Which room do you like to decorate?</h1>
-      <label>
-        <input
-          type="checkbox"
-          name="room"
-          value="Livingroom"
-          checked={formData.rooms?.includes("Livingroom") || false}
-          onChange={handleChange}
-        />
-        Hardwood
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          name="room"
-          value="Bathroom"
-          checked={formData.rooms?.includes("Bathroom") || false}
-          onChange={handleChange}
-        />
-        Carpet
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          name="room"
-          value="Bedroom"
-          checked={formData.rooms?.includes("Bedroom") || false}
-          onChange={handleChange}
-        />
-        Tile
-      </label>
+      <h1>Which rooms do you want to decorate?</h1>
+      {["Livingroom", "Bathroom", "Bedroom"].map((room) => (
+        <label key={room}>
+          <input
+            type="checkbox"
+            name="room"
+            value={room}
+            checked={formData.rooms.some((r) => r.name === room)}
+            onChange={handleChange}
+          />
+          {room}
+        </label>
+      ))}
     </div>
   );
 };

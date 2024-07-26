@@ -2,6 +2,7 @@
 
 import { useFormContext } from "@/app/context/FormContext";
 import { Rooms } from "../FormSteps/Rooms/Rooms";
+import { Floors } from "../FormSteps/Floors/Floors";
 
 export const MultiStepForm: React.FC = () => {
   const { currentStep, nextStep, backStep } = useFormContext();
@@ -10,6 +11,8 @@ export const MultiStepForm: React.FC = () => {
     switch (currentStep) {
       case 1:
         return <Rooms />;
+      case 2:
+        return <Floors />;
       default:
         return <div>Thank you for submitting the form!</div>;
     }

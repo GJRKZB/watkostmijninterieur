@@ -2,8 +2,13 @@
 
 import { createContext, useContext, useState } from "react";
 
+interface IRoom {
+  name: string;
+  floors: string[];
+}
+
 interface IFormData {
-  rooms?: string[];
+  rooms: IRoom[];
 }
 
 interface IFormContext {
@@ -19,7 +24,7 @@ const FormContext = createContext<IFormContext | undefined>(undefined);
 export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [formData, setFormData] = useState<IFormData>({});
+  const [formData, setFormData] = useState<IFormData>({ rooms: [] });
   const [currentStep, setCurrentStep] = useState(1);
 
   const updateFormData = (newData: Partial<IFormData>) => {
@@ -31,8 +36,10 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const backStep = () => {
-    setCurrentStep(currentStep - 1);
+    setCurrentStep(Math.max(1, currentStep - 1));
   };
+
+  console.log(formData);
 
   return (
     <FormContext.Provider
