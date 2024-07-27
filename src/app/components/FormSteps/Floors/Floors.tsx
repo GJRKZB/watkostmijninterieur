@@ -1,15 +1,16 @@
 import { useFormContext } from "@/app/context/FormContext";
+import { Questions } from "@/app/data/Questions";
 
 export const Floors: React.FC = () => {
   const { formData, updateFormData } = useFormContext();
 
   const handleChange = (
-    roomName: string,
+    roomSelected: string,
     floorType: string,
     checked: boolean
   ) => {
     const updatedRooms = formData.rooms.map((room) => {
-      if (room.name === roomName) {
+      if (room.rooms === roomSelected) {
         let updatedFloors = [...room.floors];
         if (checked) {
           updatedFloors.push(floorType);
@@ -24,23 +25,21 @@ export const Floors: React.FC = () => {
     updateFormData({ rooms: updatedRooms });
   };
 
-  const floorTypes = ["Hardwood", "Carpet", "Tile"];
-
   return (
     <div>
-      <h1>What type of floor do you have in each room?</h1>
+      <h1>{Questions[1].text}</h1>
       {formData.rooms.map((room) => (
-        <div key={room.name}>
-          <h2>{room.name}</h2>
-          {floorTypes.map((floorType) => (
+        <div key={room.rooms}>
+          <h2>{room.rooms}</h2>
+          {Questions[1].options.map((floorType) => (
             <label key={floorType}>
               <input
                 type="checkbox"
-                name={`floor-${room.name}`}
+                name={`floor-${room.rooms}`}
                 value={floorType}
                 checked={room.floors.includes(floorType)}
                 onChange={(e) =>
-                  handleChange(room.name, floorType, e.target.checked)
+                  handleChange(room.rooms, floorType, e.target.checked)
                 }
               />
               {floorType}

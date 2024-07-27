@@ -1,4 +1,5 @@
 import { useFormContext } from "@/app/context/FormContext";
+import { Questions } from "@/app/data/Questions";
 
 export const Rooms: React.FC = () => {
   const { formData, updateFormData } = useFormContext();
@@ -9,14 +10,15 @@ export const Rooms: React.FC = () => {
 
     if (checked) {
       updatedRooms.push({
-        name: value,
+        rooms: value,
         floors: [],
         sizes: [],
         windowDecoration: [],
         windowDecorationDetails: [],
+        amountWindows: [],
       });
     } else {
-      updatedRooms = updatedRooms.filter((room) => room.name !== value);
+      updatedRooms = updatedRooms.filter((room) => room.rooms !== value);
     }
 
     updateFormData({ rooms: updatedRooms });
@@ -26,14 +28,14 @@ export const Rooms: React.FC = () => {
 
   return (
     <div>
-      <h1>Which rooms do you want to decorate?</h1>
-      {rooms.map((room) => (
+      <h1>{Questions[0].text}</h1>
+      {Questions[0].options.map((room) => (
         <label key={room}>
           <input
             type="checkbox"
             name="room"
             value={room}
-            checked={formData.rooms.some((r) => r.name === room)}
+            checked={formData.rooms.some((r) => r.rooms === room)}
             onChange={handleChange}
           />
           {room}

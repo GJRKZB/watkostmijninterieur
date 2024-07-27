@@ -3,11 +3,12 @@
 import { createContext, useContext, useState } from "react";
 
 export interface IRoom {
-  name: string;
+  rooms: string;
   floors: string[];
   sizes: string[];
   windowDecoration: string[];
   windowDecorationDetails: string[];
+  amountWindows: string[];
 }
 
 interface IFormData {
@@ -42,8 +43,6 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
   const backStep = () => {
     setCurrentStep(Math.max(1, currentStep - 1));
   };
-
-  // console.log(formData);
 
   return (
     <FormContext.Provider

@@ -1,15 +1,16 @@
 import { useFormContext } from "@/app/context/FormContext";
+import { Questions } from "@/app/data/Questions";
 
 export const RoomSizes: React.FC = () => {
   const { formData, updateFormData } = useFormContext();
 
   const handleChange = (
-    roomName: string,
+    roomSelected: string,
     sizeType: string,
     checked: boolean
   ) => {
     const updatedRooms = formData.rooms.map((room) => {
-      if (room.name === roomName) {
+      if (room.rooms === roomSelected) {
         let updatedSizes = [...room.sizes];
         if (checked) {
           updatedSizes.push(sizeType);
@@ -24,27 +25,21 @@ export const RoomSizes: React.FC = () => {
     updateFormData({ rooms: updatedRooms });
   };
 
-  const sizeTypes = [
-    "Small (15 m² - 20 m²)",
-    "Mid-sized (20 m² - 30 m²)",
-    "Big (30 m² - 50 m²)",
-  ];
-
   return (
     <div>
-      <h1>What is the average m² for each selected room?</h1>
+      <h1>{Questions[2].text}</h1>
       {formData.rooms.map((room) => (
-        <div key={room.name}>
-          <h2>{room.name}</h2>
-          {sizeTypes.map((sizeType) => (
+        <div key={room.rooms}>
+          <h2>{room.rooms}</h2>
+          {Questions[2].options.map((sizeType) => (
             <label key={sizeType}>
               <input
                 type="checkbox"
-                name={`size-${room.name}`}
+                name={`size-${room.rooms}`}
                 value={sizeType}
                 checked={room.sizes.includes(sizeType)}
                 onChange={(e) =>
-                  handleChange(room.name, sizeType, e.target.checked)
+                  handleChange(room.rooms, sizeType, e.target.checked)
                 }
               />
               {sizeType}

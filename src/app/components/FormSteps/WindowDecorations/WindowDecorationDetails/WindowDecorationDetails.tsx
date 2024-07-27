@@ -1,22 +1,24 @@
-import React from "react";
-import { useFormContext, IRoom } from "@/app/context/FormContext";
+import { useFormContext } from "@/app/context/FormContext";
+import { AmountWindows } from "../AmountWindows/AmountWindows";
+import { Questions } from "@/app/data/Questions";
 
-interface WindowDecorationDetailsProps {
-  room: IRoom;
+interface IWindowDecorationDetailsProps {
+  windowDecoration: string[];
+  roomName: string;
 }
 
 export const WindowDecorationDetails: React.FC<
-  WindowDecorationDetailsProps
-> = ({ room }) => {
+  IWindowDecorationDetailsProps
+> = ({ windowDecoration, roomName }) => {
   const { formData, updateFormData } = useFormContext();
 
   const handleChange = (
-    roomName: string,
+    roomSelected: string,
     windowDecorationDetail: string,
     checked: boolean
   ) => {
     const updatedRooms = formData.rooms.map((room) => {
-      if (room.name === roomName) {
+      if (room.rooms === roomSelected) {
         let updatedWindowDecorationDetails = [...room.windowDecorationDetails];
         if (checked) {
           updatedWindowDecorationDetails.push(windowDecorationDetail);
@@ -33,97 +35,59 @@ export const WindowDecorationDetails: React.FC<
       }
       return room;
     });
-
     updateFormData({ rooms: updatedRooms });
   };
 
-  const renderCheckboxGroup = (
-    options: string[],
-    title: string,
-    productDetail: string
-  ) => (
-    <div key={`${room.name}-${productDetail}`}>
-      <h3>{title}</h3>
-      {options.map((option) => (
-        <label key={`${room.name}-${productDetail}-${option}`}>
-          <input
-            type="checkbox"
-            name={`windowDecorationDetails-${room.name}-${productDetail}`}
-            value={option}
-            checked={room.windowDecorationDetails.includes(option)}
-            onChange={(e) => handleChange(room.name, option, e.target.checked)}
-          />
-          {option}
-        </label>
-      ))}
-    </div>
-  );
+  const renderWindowDecorationDetails = () => {
+    return (
+      <div>
+        {windowDecoration.map((decoration) => {
+          const questionIndex =
+            {
+              Curtains: 7,
+              "Wooden Blinds": 6,
+              "Aluminum Blinds": 5,
+              "Duet Curtains": 8,
+              "Pleated Curtains": 9,
+              Inbetweens: 4,
+            }[decoration] || -1;
 
-  const renderQuestions = () => {
-    const questions = [];
+          if (
+            questionIndex === -1 ||
+            decoration === "No window decoration needed"
+          ) {
+            return null;
+          }
 
-    if (room.windowDecoration.includes("Inbetweens")) {
-      questions.push(
-        renderCheckboxGroup(
-          ["Essential", "Comfort", "Premium"],
-          "Which type of quality inbetweens?",
-          "Inbetweens"
-        )
-      );
-    }
-
-    if (room.windowDecoration.includes("Aluminum Blinds")) {
-      questions.push(
-        renderCheckboxGroup(
-          ["25mm", "50mm"],
-          "What size of aluminum blinds?",
-          "AluminumBlinds"
-        )
-      );
-    }
-
-    if (room.windowDecoration.includes("Wooden Blinds")) {
-      questions.push(
-        renderCheckboxGroup(
-          ["50mm", "60mm"],
-          "What size of wooden blinds?",
-          "WoodenBlinds"
-        )
-      );
-    }
-
-    if (room.windowDecoration.includes("Curtains")) {
-      questions.push(
-        renderCheckboxGroup(
-          ["Essential", "Comfort", "Premium"],
-          "What quality of curtains?",
-          "Curtains"
-        )
-      );
-    }
-
-    if (room.windowDecoration.includes("Duet Curtains")) {
-      questions.push(
-        renderCheckboxGroup(
-          ["25mm", "32mm"],
-          "What size of duet curtains?",
-          "DuetCurtains"
-        )
-      );
-    }
-
-    if (room.windowDecoration.includes("Pleated Curtains")) {
-      questions.push(
-        renderCheckboxGroup(
-          ["20mm", "32mm"],
-          "What size of pleated curtains?",
-          "PleatedCurtains"
-        )
-      );
-    }
-
-    return questions;
+          return (
+            <div key={decoration}>
+              <h1>{Questions[questionIndex].text}</h1>
+              {Questions[questionIndex].options.map((option) => (
+                <label key={option}>
+                  <input
+                    type="checkbox"
+                    name={`windowDecorationDetails-${decoration}`}
+                    value={option}
+                    checked={formData.rooms
+                      .find((room) => room.rooms === roomName)
+                      ?.windowDecorationDetails.includes(option)}
+                    onChange={(e) =>
+                      handleChange(roomName, option, e.target.checked)
+                    }
+                  />
+                  {option}
+                </label>
+              ))}
+            </div>
+          );
+        })}
+        <AmountWindows
+          windowDecorationDetails={windowDecoration}
+          roomName={roomName}
+        />
+      </div>
+    );
   };
 
-  return <>{renderQuestions()}</>;
+  return <div>{renderWindowDecorationDetails()}</div>;
 };
