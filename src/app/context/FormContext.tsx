@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 export interface IRoom {
   rooms: string;
@@ -16,6 +16,9 @@ export interface IRoom {
 }
 
 interface IFormData {
+  firstName: string;
+  email: string;
+  phoneNumber?: string;
   rooms: IRoom[];
 }
 
@@ -25,6 +28,7 @@ interface IFormContext {
   currentStep: number;
   nextStep: () => void;
   backStep: () => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const FormContext = createContext<IFormContext | undefined>(undefined);
@@ -32,7 +36,12 @@ const FormContext = createContext<IFormContext | undefined>(undefined);
 export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [formData, setFormData] = useState<IFormData>({ rooms: [] });
+  const [formData, setFormData] = useState<IFormData>({
+    firstName: "",
+    email: "",
+    phoneNumber: "",
+    rooms: [],
+  });
   const [currentStep, setCurrentStep] = useState(1);
 
   console.log(formData);
@@ -48,9 +57,21 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     setCurrentStep(Math.max(1, currentStep - 1));
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Submitting form:", formData);
+  };
+
   return (
     <FormContext.Provider
-      value={{ formData, updateFormData, currentStep, nextStep, backStep }}
+      value={{
+        formData,
+        updateFormData,
+        currentStep,
+        nextStep,
+        backStep,
+        handleSubmit,
+      }}
     >
       {children}
     </FormContext.Provider>
