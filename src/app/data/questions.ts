@@ -1,5 +1,5 @@
 import { IQuestionItem } from "../types/types";
-export const questions: IQuestionItem[] = [
+export const Questions: IQuestionItem[] = [
   {
     id: 0,
     text: "Which room do you like to decorate?",
@@ -28,7 +28,6 @@ export const questions: IQuestionItem[] = [
       "Aluminum Blinds",
       "Duet Curtains",
       "Pleated Curtains",
-      "Roller Blinds",
       "Inbetweens",
       "No window decoration needed",
     ],

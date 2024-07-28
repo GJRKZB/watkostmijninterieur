@@ -1,9 +1,10 @@
-import Form from "./components/form/Form";
+import { MultiStepForm } from "./components/MultiStepForm/MultiStepForm";
+import { FormProvider } from "./context/FormContext";
 
 export default function Home() {
   return (
-    <main>
-      <Form />
-    </main>
+    <FormProvider>
+      <MultiStepForm />
+    </FormProvider>
   );
 }

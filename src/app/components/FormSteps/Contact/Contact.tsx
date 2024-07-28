@@ -1,14 +1,13 @@
-import { IFormData } from "@/app/types/types";
+import { useFormContext } from "@/app/context/FormContext";
 
-interface IContactDetailProps {
-  formData: IFormData;
-  handleContactDetails: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+export const Contact: React.FC = () => {
+  const { formData, updateFormData } = useFormContext();
 
-export const Contact: React.FC<IContactDetailProps> = ({
-  formData,
-  handleContactDetails,
-}) => {
+  const handleContactDetails = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    updateFormData({ [name]: value });
+  };
+
   return (
     <div>
       <label htmlFor="firstName">First Name:</label>
@@ -17,8 +16,8 @@ export const Contact: React.FC<IContactDetailProps> = ({
         type="text"
         name="firstName"
         id="firstName"
-        onChange={handleContactDetails}
         value={formData.firstName}
+        onChange={handleContactDetails}
       />
       <br />
       <label htmlFor="email">Email:</label>
@@ -27,8 +26,8 @@ export const Contact: React.FC<IContactDetailProps> = ({
         type="email"
         name="email"
         id="email"
-        onChange={handleContactDetails}
         value={formData.email}
+        onChange={handleContactDetails}
       />
       <br />
       <label htmlFor="phoneNumber">Phone Number:</label>
@@ -37,8 +36,8 @@ export const Contact: React.FC<IContactDetailProps> = ({
         type="tel"
         name="phoneNumber"
         id="phoneNumber"
-        onChange={handleContactDetails}
         value={formData.phoneNumber}
+        onChange={handleContactDetails}
       />
     </div>
   );
