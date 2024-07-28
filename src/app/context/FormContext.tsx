@@ -9,6 +9,8 @@ export interface IRoom {
   windowDecoration: string[];
   windowDecorationDetails: string[];
   amountWindows: string[];
+  windowSizes: string[];
+  curtainSizes: string[];
 }
 
 interface IFormData {

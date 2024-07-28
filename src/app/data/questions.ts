@@ -28,7 +28,6 @@ export const Questions: IQuestionItem[] = [
       "Aluminum Blinds",
       "Duet Curtains",
       "Pleated Curtains",
-      "Roller Blinds",
       "Inbetweens",
       "No window decoration needed",
     ],

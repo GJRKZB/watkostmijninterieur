@@ -16,6 +16,8 @@ export const Rooms: React.FC = () => {
         windowDecoration: [],
         windowDecorationDetails: [],
         amountWindows: [],
+        windowSizes: [],
+        curtainSizes: [],
       });
     } else {
       updatedRooms = updatedRooms.filter((room) => room.rooms !== value);
@@ -23,8 +25,6 @@ export const Rooms: React.FC = () => {
 
     updateFormData({ rooms: updatedRooms });
   };
-
-  const rooms = ["Livingroom", "Bathroom", "Bedroom"];
 
   return (
     <div>

@@ -1,5 +1,7 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { AmountWindows } from "../AmountWindows/AmountWindows";
+import { WindowSizes } from "../WindowSizes/WindowSizes";
+import { CurtainSizes } from "../CurtainSizes/CurtainSizes";
 import { Questions } from "@/app/data/Questions";
 
 interface IWindowDecorationDetailsProps {
@@ -59,6 +61,16 @@ export const WindowDecorationDetails: React.FC<
             return null;
           }
 
+          const showAmountAndSizes = [
+            "Wooden Blinds",
+            "Aluminum Blinds",
+            "Duet Curtains",
+            "Pleated Curtains",
+          ].includes(decoration);
+          const showCurtainSizes = ["Curtains", "Inbetweens"].includes(
+            decoration
+          );
+
           return (
             <div key={decoration}>
               <h1>{Questions[questionIndex].text}</h1>
@@ -78,13 +90,16 @@ export const WindowDecorationDetails: React.FC<
                   {option}
                 </label>
               ))}
+              {showAmountAndSizes && (
+                <>
+                  <AmountWindows roomName={roomName} />
+                  <WindowSizes roomName={roomName} />
+                </>
+              )}
+              {showCurtainSizes && <CurtainSizes roomName={roomName} />}
             </div>
           );
         })}
-        <AmountWindows
-          windowDecorationDetails={windowDecoration}
-          roomName={roomName}
-        />
       </div>
     );
   };

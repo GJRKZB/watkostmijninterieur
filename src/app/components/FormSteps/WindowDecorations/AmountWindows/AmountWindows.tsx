@@ -2,14 +2,10 @@ import { useFormContext } from "@/app/context/FormContext";
 import { Questions } from "@/app/data/Questions";
 
 interface IAmountWindowsProps {
-  windowDecorationDetails: string[];
   roomName: string;
 }
 
-export const AmountWindows: React.FC<IAmountWindowsProps> = ({
-  windowDecorationDetails,
-  roomName,
-}) => {
+export const AmountWindows: React.FC<IAmountWindowsProps> = ({ roomName }) => {
   const { formData, updateFormData } = useFormContext();
 
   const handleChange = (
@@ -39,26 +35,22 @@ export const AmountWindows: React.FC<IAmountWindowsProps> = ({
 
   return (
     <div>
-      {windowDecorationDetails.map((decoration) => (
-        <div key={decoration}>
-          <h1>{Questions[10].text}</h1>
-          {Questions[10].options.map((amountWindows) => (
-            <label key={amountWindows}>
-              <input
-                type="checkbox"
-                name={`amountWindows-${decoration}`}
-                value={amountWindows}
-                checked={formData.rooms
-                  .find((room) => room.rooms === roomName)
-                  ?.amountWindows.includes(amountWindows)}
-                onChange={(e) => {
-                  handleChange(roomName, amountWindows, e.target.checked);
-                }}
-              />
-              {amountWindows}
-            </label>
-          ))}
-        </div>
+      <h1>{Questions[10].text}</h1>
+      {Questions[10].options.map((amountWindows) => (
+        <label key={amountWindows}>
+          <input
+            type="checkbox"
+            name={`amountWindows-${roomName}`}
+            value={amountWindows}
+            checked={formData.rooms
+              .find((room) => room.rooms === roomName)
+              ?.amountWindows.includes(amountWindows)}
+            onChange={(e) => {
+              handleChange(roomName, amountWindows, e.target.checked);
+            }}
+          />
+          {amountWindows}
+        </label>
       ))}
     </div>
   );
