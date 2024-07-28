@@ -18,6 +18,8 @@ export const Rooms: React.FC = () => {
         amountWindows: [],
         windowSizes: [],
         curtainSizes: [],
+        furniture: [],
+        furnitureQuality: [],
       });
     } else {
       updatedRooms = updatedRooms.filter((room) => room.rooms !== value);

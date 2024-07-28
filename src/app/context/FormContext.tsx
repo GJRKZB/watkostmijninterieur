@@ -11,6 +11,8 @@ export interface IRoom {
   amountWindows: string[];
   windowSizes: string[];
   curtainSizes: string[];
+  furniture: string[];
+  furnitureQuality: string[];
 }
 
 interface IFormData {
