@@ -1,7 +1,7 @@
 import { useFormContext } from "@/app/context/FormContext";
 
 export const Contact: React.FC = () => {
-  const { formData, updateFormData } = useFormContext();
+  const { formData, updateFormData, error } = useFormContext();
 
   const handleContactDetails = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -39,6 +39,7 @@ export const Contact: React.FC = () => {
         value={formData.phoneNumber}
         onChange={handleContactDetails}
       />
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };

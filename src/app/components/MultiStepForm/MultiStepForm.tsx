@@ -11,7 +11,18 @@ import { Contact } from "../FormSteps/Contact/Contact";
 const TOTAL_STEPS = 6;
 
 export const MultiStepForm: React.FC = () => {
-  const { currentStep, nextStep, backStep, handleSubmit } = useFormContext();
+  const {
+    currentStep,
+    nextStep,
+    backStep,
+    handleSubmit,
+    isSubmitted,
+    isLoading,
+  } = useFormContext();
+
+  if (isSubmitted) {
+    return <div>Thank you for submitting the form!</div>;
+  }
 
   const renderStep = () => {
     switch (currentStep) {
@@ -28,7 +39,7 @@ export const MultiStepForm: React.FC = () => {
       case 6:
         return <Contact />;
       default:
-        return <div>Thank you for submitting the form!</div>;
+        return null;
     }
   };
 
@@ -38,16 +49,18 @@ export const MultiStepForm: React.FC = () => {
     <form onSubmit={handleSubmit}>
       {renderStep()}
       {currentStep > 1 && (
-        <button type="button" onClick={backStep}>
+        <button type="button" onClick={backStep} disabled={isLoading}>
           Back
         </button>
       )}
       {currentStep < TOTAL_STEPS ? (
-        <button type="button" onClick={nextStep}>
+        <button type="button" onClick={nextStep} disabled={isLoading}>
           Next
         </button>
       ) : (
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={isLoading}>
+          {isSubmitted ? "Submitted" : "Submit"}
+        </button>
       )}
     </form>
   );
