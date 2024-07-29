@@ -29,6 +29,9 @@ interface IFormContext {
   nextStep: () => void;
   backStep: () => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  isSubmitted: boolean;
+  isLoading: boolean;
+  error: string | null;
 }
 
 const FormContext = createContext<IFormContext | undefined>(undefined);
@@ -57,9 +60,22 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     setCurrentStep(Math.max(1, currentStep - 1));
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Submitting form:", formData);
+    setIsLoading(true);
+    setError(null);
+    if (!formData.firstName || !formData.email || !formData.phoneNumber) {
+      setError("Please fill in all required fields");
+      setIsLoading(false);
+      return;
+    }
+    setIsSubmitted(true);
+    setIsLoading(false);
+    console.log("Submitting form:", formData, isSubmitted);
   };
 
   return (
@@ -71,6 +87,9 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
         nextStep,
         backStep,
         handleSubmit,
+        isSubmitted,
+        isLoading,
+        error,
       }}
     >
       {children}
