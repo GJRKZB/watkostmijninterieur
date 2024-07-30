@@ -9,11 +9,6 @@ export interface IQuestionItem {
   id: number;
   text: string;
   options: string[];
-  closestValueText?: string;
-  dependsOn?: {
-    questionId: number;
-    value: string[];
-  };
 }
 
 export interface IRoomChoice {
