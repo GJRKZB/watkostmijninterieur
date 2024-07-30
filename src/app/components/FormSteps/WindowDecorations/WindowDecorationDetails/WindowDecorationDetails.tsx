@@ -90,12 +90,7 @@ export const WindowDecorationDetails: React.FC<
                   {option}
                 </label>
               ))}
-              {showAmountAndSizes && (
-                <>
-                  <AmountWindows roomName={roomName} />
-                  <WindowSizes roomName={roomName} />
-                </>
-              )}
+              {showAmountAndSizes && <AmountWindows roomName={roomName} />}
               {showCurtainSizes && <CurtainSizes roomName={roomName} />}
             </div>
           );
