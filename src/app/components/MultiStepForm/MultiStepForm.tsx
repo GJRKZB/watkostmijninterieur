@@ -24,6 +24,8 @@ export const MultiStepForm: React.FC = () => {
     return <div>Thank you for submitting the form!</div>;
   }
 
+  console.log(isSubmitted);
+
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -42,26 +44,26 @@ export const MultiStepForm: React.FC = () => {
         return null;
     }
   };
-
-  console.log(currentStep);
-
   return (
     <form onSubmit={handleSubmit}>
       {renderStep()}
-      {currentStep > 1 && (
-        <button type="button" onClick={backStep} disabled={isLoading}>
-          Back
-        </button>
-      )}
-      {currentStep < TOTAL_STEPS ? (
-        <button type="button" onClick={nextStep} disabled={isLoading}>
-          Next
-        </button>
-      ) : (
-        <button type="submit" disabled={isLoading}>
-          {isSubmitted ? "Submitted" : "Submit"}
-        </button>
-      )}
+      <div>
+        {currentStep > 1 && (
+          <button type="button" onClick={backStep} disabled={isLoading}>
+            Back
+          </button>
+        )}
+        {currentStep < TOTAL_STEPS && (
+          <button type="button" onClick={nextStep} disabled={isLoading}>
+            Next
+          </button>
+        )}
+        {currentStep === TOTAL_STEPS && (
+          <button type="submit" disabled={isLoading}>
+            Submit
+          </button>
+        )}
+      </div>
     </form>
   );
 };

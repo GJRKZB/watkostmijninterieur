@@ -1,6 +1,7 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, FormEvent } from "react";
+import axios from "axios";
 
 export interface IRoom {
   rooms: string;
@@ -28,13 +29,14 @@ interface IFormContext {
   currentStep: number;
   nextStep: () => void;
   backStep: () => void;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   isSubmitted: boolean;
   isLoading: boolean;
   error: string | null;
 }
 
 const FormContext = createContext<IFormContext | undefined>(undefined);
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -64,18 +66,20 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
   const [error, setError] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(null);
-    if (!formData.firstName || !formData.email || !formData.phoneNumber) {
-      setError("Please fill in all required fields");
+    try {
+      const response = await axios.post(`${API_URL}/price`, formData);
+      const data = response.data;
+      setIsSubmitted(true);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+      setError("Something went wrong. Please try again later.");
+    } finally {
       setIsLoading(false);
-      return;
     }
-    setIsSubmitted(true);
-    setIsLoading(false);
-    console.log("Submitting form:", formData, isSubmitted);
   };
 
   return (
