@@ -1,5 +1,6 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { Questions } from "@/app/data/Questions";
+import { CheckboxGroup, Checkbox } from "@nextui-org/react";
 
 interface ICurtainSizesProps {
   roomName: string;
@@ -10,49 +11,38 @@ export const CurtainSizes: React.FC<ICurtainSizesProps> = ({ roomName }) => {
 
   const handleChange = (
     roomSelected: string,
-    curtainSize: string,
-    checked: boolean
+    selectedCurtainSizes: string[],
   ) => {
-    const updatedRooms = formData.rooms.map((room) => {
+    const updatedRoom = formData.rooms.map((room) => {
       if (room.rooms === roomSelected) {
-        let updatedCurtainSizes = [...room.curtainSizes];
-        if (checked) {
-          updatedCurtainSizes.push(curtainSize);
-        } else {
-          updatedCurtainSizes = updatedCurtainSizes.filter(
-            (size) => size !== curtainSize
-          );
-        }
-        return {
-          ...room,
-          curtainSizes: updatedCurtainSizes,
-        };
+        return { ...room, curtainSizes: selectedCurtainSizes };
       }
       return room;
     });
-
-    updateFormData({ rooms: updatedRooms });
+    updateFormData({ rooms: updatedRoom });
   };
+
+  const room = formData.rooms.find((room) => room.rooms === roomName);
+
+  if (!room) {
+    return null;
+  }
 
   return (
     <div>
       <h1>{Questions[12].text}</h1>
-      {Questions[12].options.map((curtainSize) => (
-        <label key={curtainSize}>
-          <input
-            type="checkbox"
-            name={`curtainSizes-${roomName}`}
-            value={curtainSize}
-            checked={formData.rooms
-              .find((room) => room.rooms === roomName)
-              ?.curtainSizes.includes(curtainSize)}
-            onChange={(e) =>
-              handleChange(roomName, curtainSize, e.target.checked)
-            }
-          />
-          {curtainSize}
-        </label>
-      ))}
+      <CheckboxGroup
+        value={room.curtainSizes}
+        onValueChange={(selectedCurtainSizes) =>
+          handleChange(room.rooms, selectedCurtainSizes)
+        }
+      >
+        {Questions[12].options.map((curtainSize) => (
+          <Checkbox key={curtainSize} value={curtainSize}>
+            {curtainSize}
+          </Checkbox>
+        ))}
+      </CheckboxGroup>
     </div>
   );
 };

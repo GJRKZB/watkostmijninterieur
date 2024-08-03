@@ -1,29 +1,23 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { Questions } from "@/app/data/Questions";
+import { CheckboxGroup, Checkbox } from "@nextui-org/react";
 
 export const Rooms: React.FC = () => {
   const { formData, updateFormData } = useFormContext();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, checked } = e.target;
-    let updatedRooms = [...formData.rooms];
-
-    if (checked) {
-      updatedRooms.push({
-        rooms: value,
-        floors: [],
-        sizes: [],
-        windowDecoration: [],
-        windowDecorationDetails: [],
-        amountWindows: [],
-        windowSizes: [],
-        curtainSizes: [],
-        furniture: [],
-        furnitureQuality: [],
-      });
-    } else {
-      updatedRooms = updatedRooms.filter((room) => room.rooms !== value);
-    }
+  const handleChange = (selectedRooms: string[]) => {
+    const updatedRooms = selectedRooms.map((room) => ({
+      rooms: room,
+      floors: [],
+      sizes: [],
+      windowDecoration: [],
+      windowDecorationDetails: [],
+      amountWindows: [],
+      windowSizes: [],
+      curtainSizes: [],
+      furniture: [],
+      furnitureQuality: [],
+    }));
 
     updateFormData({ rooms: updatedRooms });
   };
@@ -31,18 +25,16 @@ export const Rooms: React.FC = () => {
   return (
     <div>
       <h1>{Questions[0].text}</h1>
-      {Questions[0].options.map((room) => (
-        <label key={room}>
-          <input
-            type="checkbox"
-            name="room"
-            value={room}
-            checked={formData.rooms.some((r) => r.rooms === room)}
-            onChange={handleChange}
-          />
-          {room}
-        </label>
-      ))}
+      <CheckboxGroup
+        value={formData.rooms.map((room) => room.rooms)}
+        onValueChange={handleChange}
+      >
+        {Questions[0].options.map((room) => (
+          <Checkbox key={room} value={room}>
+            {room}
+          </Checkbox>
+        ))}
+      </CheckboxGroup>
     </div>
   );
 };

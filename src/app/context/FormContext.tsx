@@ -9,7 +9,7 @@ export interface IRoom {
   sizes: string[];
   windowDecoration: string[];
   windowDecorationDetails: string[];
-  amountWindows: string[];
+  amountWindows: string;
   windowSizes: string[];
   curtainSizes: string[];
   furniture: string[];
@@ -68,18 +68,19 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
-    try {
-      const response = await axios.post(`${API_URL}/price`, formData);
-      const data = response.data;
-      setIsSubmitted(true);
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-      setError("Something went wrong. Please try again later.");
-    } finally {
-      setIsLoading(false);
-    }
+    console.log(formData);
+    // setIsLoading(true);
+    // try {
+    //   const response = await axios.post(`${API_URL}/price`, formData);
+    //   const data = response.data;
+    setIsSubmitted(true);
+    //   console.log(data);
+    // } catch (error) {
+    //   console.error(error);
+    //   setError("Something went wrong. Please try again later.");
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   return (

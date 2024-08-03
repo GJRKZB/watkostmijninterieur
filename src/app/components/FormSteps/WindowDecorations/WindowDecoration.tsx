@@ -1,29 +1,18 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { WindowDecorationDetails } from "./WindowDecorationDetails/WindowDecorationDetails";
 import { Questions } from "@/app/data/Questions";
+import { CheckboxGroup, Checkbox } from "@nextui-org/react";
 
 export const WindowDecoration: React.FC = () => {
   const { formData, updateFormData } = useFormContext();
 
   const handleChange = (
     roomSelected: string,
-    windowDecorationProduct: string,
-    checked: boolean
+    selectedWindowDecorations: string[],
   ) => {
     const updatedRooms = formData.rooms.map((room) => {
       if (room.rooms === roomSelected) {
-        let updatedWindowDecorations = [...room.windowDecoration];
-        if (checked) {
-          updatedWindowDecorations.push(windowDecorationProduct);
-        } else {
-          updatedWindowDecorations = updatedWindowDecorations.filter(
-            (windowDecoration) => windowDecoration !== windowDecorationProduct
-          );
-        }
-        return {
-          ...room,
-          windowDecoration: updatedWindowDecorations,
-        };
+        return { ...room, windowDecoration: selectedWindowDecorations };
       }
       return room;
     });
@@ -37,30 +26,22 @@ export const WindowDecoration: React.FC = () => {
       {formData.rooms.map((room) => (
         <div key={room.rooms}>
           <h2>{room.rooms}</h2>
-          {Questions[3].options.map((windowDecorationProduct) => (
-            <label key={windowDecorationProduct}>
-              <input
-                type="checkbox"
-                name={`windowDecoration-${room.rooms}`}
-                value={windowDecorationProduct}
-                checked={room.windowDecoration.includes(
-                  windowDecorationProduct
-                )}
-                onChange={(e) =>
-                  handleChange(
-                    room.rooms,
-                    windowDecorationProduct,
-                    e.target.checked
-                  )
-                }
-              />
-              {windowDecorationProduct}
-            </label>
-          ))}
-          <WindowDecorationDetails
-            windowDecoration={room.windowDecoration}
-            roomName={room.rooms}
-          />
+          <CheckboxGroup
+            value={room.windowDecoration}
+            onValueChange={(selectedWindowDecorations) =>
+              handleChange(room.rooms, selectedWindowDecorations)
+            }
+          >
+            {Questions[3].options.map((WindowDecorationProduct) => (
+              <Checkbox
+                key={WindowDecorationProduct}
+                value={WindowDecorationProduct}
+              >
+                {WindowDecorationProduct}
+              </Checkbox>
+            ))}
+          </CheckboxGroup>
+          <WindowDecorationDetails roomName={room.rooms} />
         </div>
       ))}
     </div>
