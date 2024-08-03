@@ -1,7 +1,7 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { Questions } from "@/app/data/Questions";
 import { FurnitureQuality } from "./FurnitureQuality";
-import { CheckboxGroup, Checkbox } from "@nextui-org/react";
+import { CheckboxGroup, Checkbox, cn } from "@nextui-org/react";
 
 export const Furniture: React.FC = () => {
   const { formData, updateFormData } = useFormContext();
@@ -17,8 +17,8 @@ export const Furniture: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>{Questions[13].text}</h1>
+    <div className="flex flex-col gap-4">
+      <h1 className="font-sans text-xl font-bold">{Questions[13].text}</h1>
       {formData.rooms.map((room) => (
         <div key={room.rooms}>
           <h2>{room.rooms}</h2>
@@ -29,7 +29,19 @@ export const Furniture: React.FC = () => {
             }
           >
             {Questions[13].options.map((furniture) => (
-              <Checkbox key={furniture} value={furniture}>
+              <Checkbox
+                classNames={{
+                  base: cn(
+                    "inline-flex max-w-full m-0",
+                    "hover: items-center justify-start",
+                    "cursor-pointer rounded-lg gap-2 p-4 border-2 border-solid",
+                    "data-[selected=true]:border-primary-500 data-[selected=true]:bg-primary-50 data-[selected=true]:text-primary-600",
+                  ),
+                  label: "w-full font-sans font-medium",
+                }}
+                key={furniture}
+                value={furniture}
+              >
                 {furniture}
               </Checkbox>
             ))}

@@ -1,6 +1,6 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { Questions } from "@/app/data/Questions";
-import { CheckboxGroup, Checkbox } from "@nextui-org/react";
+import { CheckboxGroup, Checkbox, cn } from "@nextui-org/react";
 
 export const RoomSizes: React.FC = () => {
   const { formData, updateFormData } = useFormContext();
@@ -16,11 +16,11 @@ export const RoomSizes: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>{Questions[2].text}</h1>
+    <div className="flex flex-col gap-4">
+      <h1 className="font-sans text-xl font-bold">{Questions[2].text}</h1>
       {formData.rooms.map((room) => (
-        <div key={room.rooms}>
-          <h2>{room.rooms}</h2>
+        <div className="flex flex-col gap-2" key={room.rooms}>
+          <h2 className="font-sans text-lg font-normal">{room.rooms}</h2>
           <CheckboxGroup
             value={room.sizes}
             onValueChange={(selectedSizes) =>
@@ -28,7 +28,19 @@ export const RoomSizes: React.FC = () => {
             }
           >
             {Questions[2].options.map((sizeType) => (
-              <Checkbox key={sizeType} value={sizeType}>
+              <Checkbox
+                classNames={{
+                  base: cn(
+                    "inline-flex max-w-full m-0",
+                    "hover: items-center justify-start",
+                    "cursor-pointer rounded-lg gap-2 p-4 border-2 border-solid",
+                    "data-[selected=true]:border-primary-500 data-[selected=true]:bg-primary-50 data-[selected=true]:text-primary-600",
+                  ),
+                  label: "w-full font-sans font-medium",
+                }}
+                key={sizeType}
+                value={sizeType}
+              >
                 {sizeType}
               </Checkbox>
             ))}

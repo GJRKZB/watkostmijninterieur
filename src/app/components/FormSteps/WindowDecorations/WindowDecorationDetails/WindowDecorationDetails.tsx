@@ -2,7 +2,7 @@ import { useFormContext } from "@/app/context/FormContext";
 import { AmountWindows } from "../AmountWindows/AmountWindows";
 import { CurtainSizes } from "../CurtainSizes/CurtainSizes";
 import { Questions } from "@/app/data/Questions";
-import { CheckboxGroup, Checkbox } from "@nextui-org/react";
+import { CheckboxGroup, Checkbox, cn } from "@nextui-org/react";
 import { WindowSizes } from "../WindowSizes/WindowSizes";
 
 interface IWindowDecorationDetailsProps {
@@ -37,10 +37,10 @@ export const WindowDecorationDetails: React.FC<
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       {room.windowDecoration.includes("Curtains") && (
-        <div>
-          <h1>{Questions[7].text}</h1>
+        <div className="flex flex-col gap-4">
+          <h1 className="font-sans text-xl font-bold">{Questions[7].text}</h1>
           <CheckboxGroup
             value={room.windowDecorationDetails}
             onValueChange={(selectedCurtainQuality) =>
@@ -48,7 +48,19 @@ export const WindowDecorationDetails: React.FC<
             }
           >
             {Questions[7].options.map((option) => (
-              <Checkbox key={option} value={option}>
+              <Checkbox
+                classNames={{
+                  base: cn(
+                    "inline-flex max-w-full m-0",
+                    "hover: items-center justify-start",
+                    "cursor-pointer rounded-lg gap-2 p-4 border-2 border-solid",
+                    "data-[selected=true]:border-primary-500 data-[selected=true]:bg-primary-50 data-[selected=true]:text-primary-600",
+                  ),
+                  label: "w-full font-sans font-medium",
+                }}
+                key={option}
+                value={option}
+              >
                 {option}
               </Checkbox>
             ))}
@@ -59,7 +71,7 @@ export const WindowDecorationDetails: React.FC<
         </div>
       )}
       {room.windowDecoration.includes("Inbetweens") && (
-        <div>
+        <div className="flex flex-col gap-4">
           <h1>{Questions[4].text}</h1>
           <CheckboxGroup
             value={room.windowDecorationDetails}
@@ -68,7 +80,19 @@ export const WindowDecorationDetails: React.FC<
             }
           >
             {Questions[4].options.map((option) => (
-              <Checkbox key={option} value={option}>
+              <Checkbox
+                classNames={{
+                  base: cn(
+                    "inline-flex max-w-full m-0",
+                    "hover: items-center justify-start",
+                    "cursor-pointer rounded-lg gap-2 p-4 border-2 border-solid",
+                    "data-[selected=true]:border-primary-500 data-[selected=true]:bg-primary-50 data-[selected=true]:text-primary-600",
+                  ),
+                  label: "w-full font-sans font-medium",
+                }}
+                key={option}
+                value={option}
+              >
                 {option}
               </Checkbox>
             ))}
@@ -79,7 +103,7 @@ export const WindowDecorationDetails: React.FC<
         </div>
       )}
       {room.windowDecoration.includes("Wooden Blinds") && (
-        <div>
+        <div className="flex flex-col gap-4">
           <h1>{Questions[6].text}</h1>
           <CheckboxGroup
             value={room.windowDecorationDetails}
@@ -88,7 +112,19 @@ export const WindowDecorationDetails: React.FC<
             }
           >
             {Questions[6].options.map((option) => (
-              <Checkbox key={option} value={option}>
+              <Checkbox
+                classNames={{
+                  base: cn(
+                    "inline-flex max-w-full m-0",
+                    "hover: items-center justify-start",
+                    "cursor-pointer rounded-lg gap-2 p-4 border-2 border-solid",
+                    "data-[selected=true]:border-primary-500 data-[selected=true]:bg-primary-50 data-[selected=true]:text-primary-600",
+                  ),
+                  label: "w-full font-sans font-medium",
+                }}
+                key={option}
+                value={option}
+              >
                 {option}
               </Checkbox>
             ))}
@@ -99,7 +135,7 @@ export const WindowDecorationDetails: React.FC<
         </div>
       )}
       {room.windowDecoration.includes("Aluminum Blinds") && (
-        <div>
+        <div className="flex flex-col gap-4">
           <h1>{Questions[5].text}</h1>
           <CheckboxGroup
             value={room.windowDecorationDetails}
@@ -108,7 +144,19 @@ export const WindowDecorationDetails: React.FC<
             }
           >
             {Questions[5].options.map((option) => (
-              <Checkbox key={option} value={option}>
+              <Checkbox
+                classNames={{
+                  base: cn(
+                    "inline-flex max-w-full m-0",
+                    "hover: items-center justify-start",
+                    "cursor-pointer rounded-lg gap-2 p-4 border-2 border-solid",
+                    "data-[selected=true]:border-primary-500 data-[selected=true]:bg-primary-50 data-[selected=true]:text-primary-600",
+                  ),
+                  label: "w-full font-sans font-medium",
+                }}
+                key={option}
+                value={option}
+              >
                 {option}
               </Checkbox>
             ))}
@@ -119,7 +167,7 @@ export const WindowDecorationDetails: React.FC<
         </div>
       )}
       {room.windowDecoration.includes("Duet Curtains") && (
-        <div>
+        <div className="flex flex-col gap-4">
           <h1>{Questions[8].text}</h1>
           <CheckboxGroup
             value={room.windowDecorationDetails}
@@ -128,7 +176,19 @@ export const WindowDecorationDetails: React.FC<
             }
           >
             {Questions[8].options.map((option) => (
-              <Checkbox key={option} value={option}>
+              <Checkbox
+                classNames={{
+                  base: cn(
+                    "inline-flex max-w-full m-0",
+                    "hover: items-center justify-start",
+                    "cursor-pointer rounded-lg gap-2 p-4 border-2 border-solid",
+                    "data-[selected=true]:border-primary-500 data-[selected=true]:bg-primary-50 data-[selected=true]:text-primary-600",
+                  ),
+                  label: "w-full font-sans font-medium",
+                }}
+                key={option}
+                value={option}
+              >
                 {option}
               </Checkbox>
             ))}
@@ -139,7 +199,7 @@ export const WindowDecorationDetails: React.FC<
         </div>
       )}
       {room.windowDecoration.includes("Pleated Curtains") && (
-        <div>
+        <div className="flex flex-col gap-4">
           <h1>{Questions[9].text}</h1>
           <CheckboxGroup
             value={room.windowDecorationDetails}
@@ -148,7 +208,19 @@ export const WindowDecorationDetails: React.FC<
             }
           >
             {Questions[9].options.map((option) => (
-              <Checkbox key={option} value={option}>
+              <Checkbox
+                classNames={{
+                  base: cn(
+                    "inline-flex max-w-full m-0",
+                    "hover: items-center justify-start",
+                    "cursor-pointer rounded-lg gap-2 p-4 border-2 border-solid",
+                    "data-[selected=true]:border-primary-500 data-[selected=true]:bg-primary-50 data-[selected=true]:text-primary-600",
+                  ),
+                  label: "w-full font-sans font-medium",
+                }}
+                key={option}
+                value={option}
+              >
                 {option}
               </Checkbox>
             ))}

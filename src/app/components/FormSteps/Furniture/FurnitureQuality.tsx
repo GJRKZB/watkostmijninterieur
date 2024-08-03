@@ -1,6 +1,6 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { Questions } from "@/app/data/Questions";
-import { CheckboxGroup, Checkbox } from "@nextui-org/react";
+import { CheckboxGroup, Checkbox, cn } from "@nextui-org/react";
 
 interface IFurnitureQualityProps {
   roomName: string;
@@ -31,8 +31,8 @@ export const FurnitureQuality: React.FC<IFurnitureQualityProps> = ({
   }
 
   return (
-    <div>
-      <h1>{Questions[14].text}</h1>
+    <div className="flex flex-col gap-4">
+      <h1 className="font-sans text-xl font-bold">{Questions[14].text}</h1>
       <CheckboxGroup
         value={room.furnitureQuality}
         onValueChange={(selectedInbetweensQuality) =>
@@ -40,7 +40,19 @@ export const FurnitureQuality: React.FC<IFurnitureQualityProps> = ({
         }
       >
         {Questions[14].options.map((quality) => (
-          <Checkbox key={quality} value={quality}>
+          <Checkbox
+            classNames={{
+              base: cn(
+                "inline-flex max-w-full m-0",
+                "hover: items-center justify-start",
+                "cursor-pointer rounded-lg gap-2 p-4 border-2 border-solid",
+                "data-[selected=true]:border-primary-500 data-[selected=true]:bg-primary-50 data-[selected=true]:text-primary-600",
+              ),
+              label: "w-full font-sans font-medium",
+            }}
+            key={quality}
+            value={quality}
+          >
             {quality}
           </Checkbox>
         ))}

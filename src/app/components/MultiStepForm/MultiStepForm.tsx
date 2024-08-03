@@ -7,7 +7,7 @@ import { RoomSizes } from "../FormSteps/RoomSizes/RoomSizes";
 import { WindowDecoration } from "../FormSteps/WindowDecorations/WindowDecoration";
 import { Furniture } from "../FormSteps/Furniture/Furniture";
 import { Contact } from "../FormSteps/Contact/Contact";
-import { Card } from "@nextui-org/react";
+import { Card, Button } from "@nextui-org/react";
 
 const TOTAL_STEPS = 6;
 
@@ -40,19 +40,33 @@ export const MultiStepForm: React.FC = () => {
     }
   };
   return (
-    <Card className="p-8">
-      <form onSubmit={handleSubmit}>
+    <Card className="w-full max-w-2xl p-8">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         {renderStep()}
-        <div>
+        <div className="flex flex-row justify-between">
           {currentStep > 1 && (
-            <button type="button" onClick={backStep} disabled={isLoading}>
+            <Button
+              size="md"
+              color="primary"
+              variant="solid"
+              radius="sm"
+              onClick={backStep}
+              disabled={isLoading}
+            >
               Back
-            </button>
+            </Button>
           )}
           {currentStep < TOTAL_STEPS && (
-            <button type="button" onClick={nextStep} disabled={isLoading}>
+            <Button
+              size="md"
+              color="primary"
+              variant="solid"
+              radius="sm"
+              onClick={nextStep}
+              disabled={isLoading}
+            >
               Next
-            </button>
+            </Button>
           )}
           {currentStep === TOTAL_STEPS && (
             <button type="submit" disabled={isLoading}>

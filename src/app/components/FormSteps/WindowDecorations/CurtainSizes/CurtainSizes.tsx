@@ -1,6 +1,6 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { Questions } from "@/app/data/Questions";
-import { CheckboxGroup, Checkbox } from "@nextui-org/react";
+import { CheckboxGroup, Checkbox, cn } from "@nextui-org/react";
 
 interface ICurtainSizesProps {
   roomName: string;
@@ -29,8 +29,8 @@ export const CurtainSizes: React.FC<ICurtainSizesProps> = ({ roomName }) => {
   }
 
   return (
-    <div>
-      <h1>{Questions[12].text}</h1>
+    <div className="flex flex-col gap-4">
+      <h1 className="font-sans text-xl font-bold">{Questions[12].text}</h1>
       <CheckboxGroup
         value={room.curtainSizes}
         onValueChange={(selectedCurtainSizes) =>
@@ -38,7 +38,19 @@ export const CurtainSizes: React.FC<ICurtainSizesProps> = ({ roomName }) => {
         }
       >
         {Questions[12].options.map((curtainSize) => (
-          <Checkbox key={curtainSize} value={curtainSize}>
+          <Checkbox
+            classNames={{
+              base: cn(
+                "inline-flex max-w-full m-0",
+                "hover: items-center justify-start",
+                "cursor-pointer rounded-lg gap-2 p-4 border-2 border-solid",
+                "data-[selected=true]:border-primary-500 data-[selected=true]:bg-primary-50 data-[selected=true]:text-primary-600",
+              ),
+              label: "w-full font-sans font-medium",
+            }}
+            key={curtainSize}
+            value={curtainSize}
+          >
             {curtainSize}
           </Checkbox>
         ))}

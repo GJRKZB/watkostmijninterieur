@@ -1,7 +1,7 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { WindowDecorationDetails } from "./WindowDecorationDetails/WindowDecorationDetails";
 import { Questions } from "@/app/data/Questions";
-import { CheckboxGroup, Checkbox } from "@nextui-org/react";
+import { CheckboxGroup, Checkbox, cn } from "@nextui-org/react";
 
 export const WindowDecoration: React.FC = () => {
   const { formData, updateFormData } = useFormContext();
@@ -21,11 +21,11 @@ export const WindowDecoration: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>{Questions[3].text}</h1>
+    <div className="flex flex-col gap-4">
+      <h1 className="font-sans text-xl font-bold">{Questions[3].text}</h1>
       {formData.rooms.map((room) => (
-        <div key={room.rooms}>
-          <h2>{room.rooms}</h2>
+        <div className="flex flex-col gap-4" key={room.rooms}>
+          <h2 className="font-sans text-lg font-normal">{room.rooms}</h2>
           <CheckboxGroup
             value={room.windowDecoration}
             onValueChange={(selectedWindowDecorations) =>
@@ -34,6 +34,15 @@ export const WindowDecoration: React.FC = () => {
           >
             {Questions[3].options.map((WindowDecorationProduct) => (
               <Checkbox
+                classNames={{
+                  base: cn(
+                    "inline-flex max-w-full m-0",
+                    "hover: items-center justify-start",
+                    "cursor-pointer rounded-lg gap-2 p-4 border-2 border-solid",
+                    "data-[selected=true]:border-primary-500 data-[selected=true]:bg-primary-50 data-[selected=true]:text-primary-600",
+                  ),
+                  label: "w-full font-sans font-medium",
+                }}
                 key={WindowDecorationProduct}
                 value={WindowDecorationProduct}
               >
