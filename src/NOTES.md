@@ -25,7 +25,7 @@ Finally, update the state when the checkbox is changed
 
 ```ts
 const handleCheckboxChangeFirst = (
-  event: React.ChangeEvent<HTMLInputElement>
+  event: React.ChangeEvent<HTMLInputElement>,
 ) => {
   const { checked, value } = event.target;
   if (checked) {
@@ -37,9 +37,11 @@ const handleCheckboxChangeFirst = (
     setFormData({
       ...formData,
       selectedValues: formData.selectedValues.filter(
-        (option) => option !== value
+        (option) => option !== value,
       ),
     });
   }
 };
 ```
+
+## Push development for vercel
