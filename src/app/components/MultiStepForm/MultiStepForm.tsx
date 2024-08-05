@@ -40,10 +40,10 @@ export const MultiStepForm: React.FC = () => {
     }
   };
   return (
-    <Card className="w-full max-w-2xl p-8">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <Card className="h-full w-full p-8">
+      <form onSubmit={handleSubmit} className="flex h-full flex-col gap-4">
         {renderStep()}
-        <div className="flex flex-row justify-between">
+        <div className="mt-auto flex w-full flex-row justify-between">
           {currentStep > 1 && (
             <Button
               size="md"

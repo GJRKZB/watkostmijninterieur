@@ -31,13 +31,13 @@ export const WindowSizes: React.FC<IWindowSizesProps> = ({ roomName }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="mt-4 flex flex-col gap-4">
       <h1 className="font-sans text-xl font-bold">{Questions[11].text}</h1>
       {Array.from({ length: parseInt(amountWindows || "0") }).map(
         (_, windowIndex) => (
           <div key={windowIndex}>
             <CheckboxGroup
-              label={`Window ${windowIndex + 1} Size`}
+              label={`Window ${windowIndex + 1}`}
               value={
                 currentRoom?.windowSizes?.[windowIndex]
                   ? [currentRoom.windowSizes[windowIndex]]

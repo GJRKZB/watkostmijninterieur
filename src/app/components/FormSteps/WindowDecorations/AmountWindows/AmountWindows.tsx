@@ -28,8 +28,8 @@ export const AmountWindows: React.FC<IAmountWindowsProps> = ({ roomName }) => {
   }
 
   return (
-    <div>
-      <h1>{Questions[10].text}</h1>
+    <div className="flex flex-col gap-4">
+      <h1 className="font-sans text-xl font-bold">{Questions[10].text}</h1>
       <div>
         <Select
           label="Select an option"

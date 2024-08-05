@@ -104,7 +104,7 @@ export const WindowDecorationDetails: React.FC<
       )}
       {room.windowDecoration.includes("Wooden Blinds") && (
         <div className="flex flex-col gap-4">
-          <h1>{Questions[6].text}</h1>
+          <h1 className="font-sans text-xl font-bold">{Questions[6].text}</h1>
           <CheckboxGroup
             value={room.windowDecorationDetails}
             onValueChange={(selectedWoodenBlinds) =>
@@ -136,7 +136,7 @@ export const WindowDecorationDetails: React.FC<
       )}
       {room.windowDecoration.includes("Aluminum Blinds") && (
         <div className="flex flex-col gap-4">
-          <h1>{Questions[5].text}</h1>
+          <h1 className="font-sans text-xl font-bold">{Questions[5].text}</h1>
           <CheckboxGroup
             value={room.windowDecorationDetails}
             onValueChange={(selectedAluminumBlinds) =>
@@ -168,7 +168,7 @@ export const WindowDecorationDetails: React.FC<
       )}
       {room.windowDecoration.includes("Duet Curtains") && (
         <div className="flex flex-col gap-4">
-          <h1>{Questions[8].text}</h1>
+          <h1 className="font-sans text-xl font-bold">{Questions[8].text}</h1>
           <CheckboxGroup
             value={room.windowDecorationDetails}
             onValueChange={(selectedDuetCurtains) =>
@@ -200,7 +200,7 @@ export const WindowDecorationDetails: React.FC<
       )}
       {room.windowDecoration.includes("Pleated Curtains") && (
         <div className="flex flex-col gap-4">
-          <h1>{Questions[9].text}</h1>
+          <h1 className="font-sans text-xl font-bold">{Questions[9].text}</h1>
           <CheckboxGroup
             value={room.windowDecorationDetails}
             onValueChange={(selectedPleatedCurtains) =>

@@ -31,7 +31,7 @@ export const FurnitureQuality: React.FC<IFurnitureQualityProps> = ({
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="mt-4 flex flex-col gap-4">
       <h1 className="font-sans text-xl font-bold">{Questions[14].text}</h1>
       <CheckboxGroup
         value={room.furnitureQuality}
