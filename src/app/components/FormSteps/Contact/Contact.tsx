@@ -1,45 +1,37 @@
 import { useFormContext } from "@/app/context/FormContext";
+import { Input } from "@nextui-org/react";
 
 export const Contact: React.FC = () => {
-  const { formData, updateFormData, error } = useFormContext();
-
-  const handleContactDetails = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    updateFormData({ [name]: value });
-  };
+  const { formData, updateFormData } = useFormContext();
 
   return (
     <div>
-      <label htmlFor="firstName">First Name:</label>
-      <br />
-      <input
+      <Input
         type="text"
-        name="firstName"
-        id="firstName"
+        variant="bordered"
+        label="First Name"
+        placeholder="Enter your first name"
         value={formData.firstName}
-        onChange={handleContactDetails}
+        onValueChange={(value) => updateFormData({ firstName: value })}
       />
       <br />
-      <label htmlFor="email">Email:</label>
-      <br />
-      <input
+      <Input
         type="email"
-        name="email"
-        id="email"
+        variant="bordered"
+        label="Email"
+        placeholder="Enter your email"
         value={formData.email}
-        onChange={handleContactDetails}
+        onValueChange={(value) => updateFormData({ email: value })}
       />
       <br />
-      <label htmlFor="phoneNumber">Phone Number:</label>
-      <br />
-      <input
+      <Input
         type="tel"
-        name="phoneNumber"
-        id="phoneNumber"
+        variant="bordered"
+        label="Phone Number"
+        placeholder="Enter your phone number"
         value={formData.phoneNumber}
-        onChange={handleContactDetails}
+        onValueChange={(value) => updateFormData({ phoneNumber: value })}
       />
-      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };

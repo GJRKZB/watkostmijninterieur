@@ -7,6 +7,7 @@ import { RoomSizes } from "../FormSteps/RoomSizes/RoomSizes";
 import { WindowDecoration } from "../FormSteps/WindowDecorations/WindowDecoration";
 import { Furniture } from "../FormSteps/Furniture/Furniture";
 import { Contact } from "../FormSteps/Contact/Contact";
+import { Card, Button } from "@nextui-org/react";
 
 const TOTAL_STEPS = 6;
 
@@ -19,12 +20,6 @@ export const MultiStepForm: React.FC = () => {
     isSubmitted,
     isLoading,
   } = useFormContext();
-
-  if (isSubmitted) {
-    return <div>Thank you for submitting the form!</div>;
-  }
-
-  console.log(isSubmitted);
 
   const renderStep = () => {
     switch (currentStep) {
@@ -45,25 +40,42 @@ export const MultiStepForm: React.FC = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
-      {renderStep()}
-      <div>
-        {currentStep > 1 && (
-          <button type="button" onClick={backStep} disabled={isLoading}>
-            Back
-          </button>
-        )}
-        {currentStep < TOTAL_STEPS && (
-          <button type="button" onClick={nextStep} disabled={isLoading}>
-            Next
-          </button>
-        )}
-        {currentStep === TOTAL_STEPS && (
-          <button type="submit" disabled={isLoading}>
-            Submit
-          </button>
-        )}
-      </div>
-    </form>
+    <Card className="h-full w-full p-8">
+      <form onSubmit={handleSubmit} className="flex h-full flex-col gap-4">
+        {renderStep()}
+        <div className="mt-auto flex w-full flex-row justify-between">
+          {currentStep > 1 && (
+            <Button
+              size="md"
+              color="primary"
+              variant="solid"
+              radius="sm"
+              onClick={backStep}
+              disabled={isLoading}
+            >
+              Back
+            </Button>
+          )}
+          {currentStep < TOTAL_STEPS && (
+            <Button
+              size="md"
+              color="primary"
+              variant="solid"
+              radius="sm"
+              onClick={nextStep}
+              disabled={isLoading}
+            >
+              Next
+            </Button>
+          )}
+          {currentStep === TOTAL_STEPS && (
+            <button type="submit" disabled={isLoading}>
+              Submit
+            </button>
+          )}
+          {isSubmitted && <div>Thank you for submitting the form!</div>}
+        </div>
+      </form>
+    </Card>
   );
 };

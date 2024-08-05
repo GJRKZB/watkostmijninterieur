@@ -4,7 +4,9 @@ import { FormProvider } from "./context/FormContext";
 export default function Home() {
   return (
     <FormProvider>
-      <MultiStepForm />
+      <div className="flex h-screen w-screen flex-col items-center justify-center bg-slate-300 p-5 md:p-40">
+        <MultiStepForm />
+      </div>
     </FormProvider>
   );
 }

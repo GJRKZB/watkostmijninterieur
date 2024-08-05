@@ -2,6 +2,7 @@ import React from "react";
 import { useFormContext } from "@/app/context/FormContext";
 import { Questions } from "@/app/data/Questions";
 import { WindowSizes } from "../WindowSizes/WindowSizes";
+import { Select, SelectItem } from "@nextui-org/react";
 
 interface IAmountWindowsProps {
   roomName: string;
@@ -10,37 +11,41 @@ interface IAmountWindowsProps {
 export const AmountWindows: React.FC<IAmountWindowsProps> = ({ roomName }) => {
   const { formData, updateFormData } = useFormContext();
 
-  const currentRoom = formData.rooms.find((room) => room.rooms === roomName);
-  const currentValue = currentRoom?.amountWindows[0];
-
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = e.target.value;
+  const handleChange = (roomSelected: string, newAmountWindows: string) => {
     const updatedRooms = formData.rooms.map((room) => {
-      if (room.rooms === roomName) {
-        return {
-          ...room,
-          amountWindows: [selectedValue],
-        };
+      if (room.rooms === roomSelected) {
+        return { ...room, amountWindows: newAmountWindows };
       }
       return room;
     });
     updateFormData({ rooms: updatedRooms });
   };
 
+  const room = formData.rooms.find((room) => room.rooms === roomName);
+
+  if (!room) {
+    return null;
+  }
+
   return (
-    <div>
-      <h1>{Questions[10].text}</h1>
-      <select onChange={handleChange} value={currentValue || ""}>
-        <option value="" disabled>
-          Select an option
-        </option>
-        {Questions[10].options.map((amountWindows) => (
-          <option key={amountWindows} value={amountWindows}>
-            {amountWindows}
-          </option>
-        ))}
-      </select>
-      <WindowSizes roomName={roomName} />
+    <div className="flex flex-col gap-4">
+      <h1 className="font-sans text-xl font-bold">{Questions[10].text}</h1>
+      <div>
+        <Select
+          label="Select an option"
+          variant="bordered"
+          selectedKeys={room.amountWindows}
+          onChange={(event) => handleChange(room.rooms, event.target.value)}
+          value={room.amountWindows}
+        >
+          {Questions[10].options.map((amountWindows) => (
+            <SelectItem key={amountWindows} value={amountWindows}>
+              {amountWindows}
+            </SelectItem>
+          ))}
+        </Select>
+        <WindowSizes roomName={roomName} />
+      </div>
     </div>
   );
 };
