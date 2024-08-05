@@ -74,6 +74,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     //   const response = await axios.post(`${API_URL}/price`, formData);
     //   const data = response.data;
     setIsSubmitted(true);
+    setCurrentStep(currentStep + 1);
     //   console.log(data);
     // } catch (error) {
     //   console.error(error);

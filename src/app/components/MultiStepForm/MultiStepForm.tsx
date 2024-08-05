@@ -7,19 +7,14 @@ import { RoomSizes } from "../FormSteps/RoomSizes/RoomSizes";
 import { WindowDecoration } from "../FormSteps/WindowDecorations/WindowDecoration";
 import { Furniture } from "../FormSteps/Furniture/Furniture";
 import { Contact } from "../FormSteps/Contact/Contact";
+import { Conformation } from "../FormSteps/Conformation/Conformation";
 import { Card, Button } from "@nextui-org/react";
 
 const TOTAL_STEPS = 6;
 
 export const MultiStepForm: React.FC = () => {
-  const {
-    currentStep,
-    nextStep,
-    backStep,
-    handleSubmit,
-    isSubmitted,
-    isLoading,
-  } = useFormContext();
+  const { currentStep, nextStep, backStep, handleSubmit, isLoading } =
+    useFormContext();
 
   const renderStep = () => {
     switch (currentStep) {
@@ -35,6 +30,8 @@ export const MultiStepForm: React.FC = () => {
         return <Furniture />;
       case 6:
         return <Contact />;
+      case 7:
+        return <Conformation />;
       default:
         return null;
     }
@@ -44,7 +41,7 @@ export const MultiStepForm: React.FC = () => {
       <form onSubmit={handleSubmit} className="flex h-full flex-col gap-4">
         {renderStep()}
         <div className="mt-auto flex w-full flex-row justify-between">
-          {currentStep > 1 && (
+          {currentStep > 1 && currentStep < TOTAL_STEPS && (
             <Button
               size="md"
               color="primary"
@@ -69,11 +66,17 @@ export const MultiStepForm: React.FC = () => {
             </Button>
           )}
           {currentStep === TOTAL_STEPS && (
-            <button type="submit" disabled={isLoading}>
+            <Button
+              type="submit"
+              size="md"
+              color="primary"
+              variant="solid"
+              radius="sm"
+              disabled={isLoading}
+            >
               Submit
-            </button>
+            </Button>
           )}
-          {isSubmitted && <div>Thank you for submitting the form!</div>}
         </div>
       </form>
     </Card>
