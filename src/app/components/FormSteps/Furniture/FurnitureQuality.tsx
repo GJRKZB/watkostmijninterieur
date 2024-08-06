@@ -1,6 +1,6 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { Questions } from "@/app/data/Questions";
-import { CheckboxGroup, Checkbox, cn } from "@nextui-org/react";
+import { RadioGroup, Radio, cn } from "@nextui-org/react";
 
 interface IFurnitureQualityProps {
   roomName: string;
@@ -13,11 +13,11 @@ export const FurnitureQuality: React.FC<IFurnitureQualityProps> = ({
 
   const handleChange = (
     roomSelected: string,
-    selectedInbetweensQuality: string[],
+    selectedInbetweensQuality: string,
   ) => {
     const updatedRoom = formData.rooms.map((room) => {
       if (room.rooms === roomSelected) {
-        return { ...room, furnitureQuality: selectedInbetweensQuality };
+        return { ...room, furnitureQuality: [selectedInbetweensQuality] };
       }
       return room;
     });
@@ -33,14 +33,14 @@ export const FurnitureQuality: React.FC<IFurnitureQualityProps> = ({
   return (
     <div className="mt-4 flex flex-col gap-4">
       <h1 className="font-sans text-xl font-bold">{Questions[14].text}</h1>
-      <CheckboxGroup
-        value={room.furnitureQuality}
+      <RadioGroup
+        value={room.furnitureQuality[0] || ""}
         onValueChange={(selectedInbetweensQuality) =>
           handleChange(room.rooms, selectedInbetweensQuality)
         }
       >
         {Questions[14].options.map((quality) => (
-          <Checkbox
+          <Radio
             classNames={{
               base: cn(
                 "inline-flex max-w-full m-0",
@@ -54,9 +54,9 @@ export const FurnitureQuality: React.FC<IFurnitureQualityProps> = ({
             value={quality}
           >
             {quality}
-          </Checkbox>
+          </Radio>
         ))}
-      </CheckboxGroup>
+      </RadioGroup>
     </div>
   );
 };

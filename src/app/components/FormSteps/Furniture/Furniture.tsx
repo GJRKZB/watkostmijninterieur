@@ -1,21 +1,15 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { Questions } from "@/app/data/Questions";
 import { FurnitureQuality } from "./FurnitureQuality";
-import {
-  CheckboxGroup,
-  Checkbox,
-  cn,
-  ScrollShadow,
-  Chip,
-} from "@nextui-org/react";
+import { RadioGroup, Radio, cn, ScrollShadow, Chip } from "@nextui-org/react";
 
 export const Furniture: React.FC = () => {
   const { formData, updateFormData } = useFormContext();
 
-  const handleChange = (roomSelected: string, selectedFurniture: string[]) => {
+  const handleChange = (roomSelected: string, selectedFurniture: string) => {
     const updatedRooms = formData.rooms.map((room) => {
       if (room.rooms === roomSelected) {
-        return { ...room, furniture: selectedFurniture };
+        return { ...room, furniture: [selectedFurniture] };
       }
       return room;
     });
@@ -32,14 +26,14 @@ export const Furniture: React.FC = () => {
               <Chip size="md" color="primary" variant="solid">
                 {room.rooms}
               </Chip>
-              <CheckboxGroup
-                value={room.furniture}
+              <RadioGroup
+                value={room.furniture[0] || ""}
                 onValueChange={(selectedFurniture) =>
                   handleChange(room.rooms, selectedFurniture)
                 }
               >
                 {Questions[13].options.map((furniture) => (
-                  <Checkbox
+                  <Radio
                     classNames={{
                       base: cn(
                         "inline-flex max-w-full m-0",
@@ -53,9 +47,9 @@ export const Furniture: React.FC = () => {
                     value={furniture}
                   >
                     {furniture}
-                  </Checkbox>
+                  </Radio>
                 ))}
-              </CheckboxGroup>
+              </RadioGroup>
               {room.furniture.length > 0 &&
                 !room.furniture.includes("No furniture") && (
                   <FurnitureQuality roomName={room.rooms} />

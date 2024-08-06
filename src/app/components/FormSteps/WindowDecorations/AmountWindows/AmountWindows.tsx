@@ -14,7 +14,12 @@ export const AmountWindows: React.FC<IAmountWindowsProps> = ({ roomName }) => {
   const handleChange = (roomSelected: string, newAmountWindows: string) => {
     const updatedRooms = formData.rooms.map((room) => {
       if (room.rooms === roomSelected) {
-        return { ...room, amountWindows: newAmountWindows };
+        const newWindowCount = parseInt(newAmountWindows);
+        return {
+          ...room,
+          amountWindows: [newAmountWindows],
+          windowSizes: Array(newWindowCount).fill(""),
+        };
       }
       return room;
     });
@@ -27,6 +32,11 @@ export const AmountWindows: React.FC<IAmountWindowsProps> = ({ roomName }) => {
     return null;
   }
 
+  const selectedAmount =
+    room.amountWindows && room.amountWindows.length > 0
+      ? room.amountWindows[0]
+      : "";
+
   return (
     <div className="flex flex-col gap-4">
       <h1 className="font-sans text-xl font-bold">{Questions[10].text}</h1>
@@ -34,9 +44,11 @@ export const AmountWindows: React.FC<IAmountWindowsProps> = ({ roomName }) => {
         <Select
           label="Select an option"
           variant="bordered"
-          selectedKeys={room.amountWindows}
-          onChange={(event) => handleChange(room.rooms, event.target.value)}
-          value={room.amountWindows}
+          selectedKeys={selectedAmount ? [selectedAmount] : []}
+          onSelectionChange={(keys) => {
+            const selected = Array.from(keys)[0] as string;
+            handleChange(room.rooms, selected);
+          }}
         >
           {Questions[10].options.map((amountWindows) => (
             <SelectItem key={amountWindows} value={amountWindows}>

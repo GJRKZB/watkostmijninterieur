@@ -1,6 +1,6 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { Questions } from "@/app/data/Questions";
-import { CheckboxGroup, Checkbox, cn } from "@nextui-org/react";
+import { RadioGroup, Radio, cn } from "@nextui-org/react";
 
 interface ICurtainSizesProps {
   roomName: string;
@@ -9,13 +9,10 @@ interface ICurtainSizesProps {
 export const CurtainSizes: React.FC<ICurtainSizesProps> = ({ roomName }) => {
   const { formData, updateFormData } = useFormContext();
 
-  const handleChange = (
-    roomSelected: string,
-    selectedCurtainSizes: string[],
-  ) => {
+  const handleChange = (roomSelected: string, selectedCurtainSizes: string) => {
     const updatedRoom = formData.rooms.map((room) => {
       if (room.rooms === roomSelected) {
-        return { ...room, curtainSizes: selectedCurtainSizes };
+        return { ...room, curtainSizes: [selectedCurtainSizes] };
       }
       return room;
     });
@@ -31,14 +28,14 @@ export const CurtainSizes: React.FC<ICurtainSizesProps> = ({ roomName }) => {
   return (
     <div className="flex flex-col gap-4">
       <h1 className="font-sans text-xl font-bold">{Questions[12].text}</h1>
-      <CheckboxGroup
-        value={room.curtainSizes}
+      <RadioGroup
+        value={room.curtainSizes[0] || ""}
         onValueChange={(selectedCurtainSizes) =>
           handleChange(room.rooms, selectedCurtainSizes)
         }
       >
         {Questions[12].options.map((curtainSize) => (
-          <Checkbox
+          <Radio
             classNames={{
               base: cn(
                 "inline-flex max-w-full m-0",
@@ -52,9 +49,9 @@ export const CurtainSizes: React.FC<ICurtainSizesProps> = ({ roomName }) => {
             value={curtainSize}
           >
             {curtainSize}
-          </Checkbox>
+          </Radio>
         ))}
-      </CheckboxGroup>
+      </RadioGroup>
     </div>
   );
 };

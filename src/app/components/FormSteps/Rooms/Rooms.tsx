@@ -12,7 +12,7 @@ export const Rooms: React.FC = () => {
       sizes: [],
       windowDecoration: [],
       windowDecorationDetails: [],
-      amountWindows: "",
+      amountWindows: [""],
       windowSizes: [],
       curtainSizes: [],
       furniture: [],
