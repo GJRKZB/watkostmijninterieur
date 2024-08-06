@@ -41,7 +41,7 @@ export const MultiStepForm: React.FC = () => {
       <form onSubmit={handleSubmit} className="flex h-full flex-col gap-4">
         {renderStep()}
         <div className="mt-auto flex w-full flex-row justify-between">
-          {currentStep > 1 && currentStep < TOTAL_STEPS && (
+          {currentStep > 1 && currentStep <= TOTAL_STEPS && (
             <Button
               size="md"
               color="primary"
@@ -72,9 +72,9 @@ export const MultiStepForm: React.FC = () => {
               color="primary"
               variant="solid"
               radius="sm"
-              disabled={isLoading}
+              isLoading={isLoading}
             >
-              Submit
+              {isLoading ? "Loading" : "Submit"}
             </Button>
           )}
         </div>
