@@ -1,7 +1,9 @@
 "use client";
 
 import React, { createContext, useContext, useState, FormEvent } from "react";
+import userSchema from "../utils/FormValidation";
 import axios from "axios";
+import { IError } from "../utils/FormValidation";
 
 export interface IRoom {
   rooms: string;
@@ -32,7 +34,7 @@ interface IFormContext {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   isSubmitted: boolean;
   isLoading: boolean;
-  error: string | null;
+  error: IError;
 }
 
 const FormContext = createContext<IFormContext | undefined>(undefined);
@@ -63,25 +65,36 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<IError>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
-    // setIsLoading(true);
-    // try {
-    //   const response = await axios.post(`${API_URL}/price`, formData);
-    //   const data = response.data;
-    setIsSubmitted(true);
-    setCurrentStep(currentStep + 1);
-    //   console.log(data);
-    // } catch (error) {
-    //   console.error(error);
-    //   setError("Something went wrong. Please try again later.");
-    // } finally {
-    //   setIsLoading(false);
-    // }
+    setIsLoading(true);
+
+    const parseContact = userSchema.safeParse({
+      firstName: formData.firstName,
+      email: formData.email,
+    });
+    if (!parseContact.success) {
+      setError(parseContact.error.formErrors.fieldErrors);
+      setIsLoading(false);
+      return;
+    }
+
+    setError({});
+    try {
+      // const response = await axios.post(`${API_URL}/price`, formData);
+      // const data = response.data;
+      // console.log(data);
+      // await new Promise((resolve) => setTimeout(resolve, 2000));
+      console.log("Form succesfully submitted:", formData);
+      setCurrentStep(currentStep + 1);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
