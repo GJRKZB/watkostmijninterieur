@@ -1,24 +1,18 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { WindowDecorationDetails } from "./WindowDecorationDetails/WindowDecorationDetails";
 import { Questions } from "@/app/data/Questions";
-import {
-  CheckboxGroup,
-  Checkbox,
-  cn,
-  ScrollShadow,
-  Chip,
-} from "@nextui-org/react";
+import { RadioGroup, Radio, cn, ScrollShadow, Chip } from "@nextui-org/react";
 
 export const WindowDecoration: React.FC = () => {
   const { formData, updateFormData } = useFormContext();
 
   const handleChange = (
     roomSelected: string,
-    selectedWindowDecorations: string[],
+    selectedWindowDecorations: string,
   ) => {
     const updatedRooms = formData.rooms.map((room) => {
       if (room.rooms === roomSelected) {
-        return { ...room, windowDecoration: selectedWindowDecorations };
+        return { ...room, windowDecoration: [selectedWindowDecorations] };
       }
       return room;
     });
@@ -36,14 +30,14 @@ export const WindowDecoration: React.FC = () => {
               <Chip size="md" color="primary" variant="solid">
                 {room.rooms}
               </Chip>
-              <CheckboxGroup
-                value={room.windowDecoration}
+              <RadioGroup
+                value={room.windowDecoration[0] || ""}
                 onValueChange={(selectedWindowDecorations) =>
                   handleChange(room.rooms, selectedWindowDecorations)
                 }
               >
                 {Questions[3].options.map((WindowDecorationProduct) => (
-                  <Checkbox
+                  <Radio
                     classNames={{
                       base: cn(
                         "inline-flex max-w-full m-0",
@@ -57,9 +51,9 @@ export const WindowDecoration: React.FC = () => {
                     value={WindowDecorationProduct}
                   >
                     {WindowDecorationProduct}
-                  </Checkbox>
+                  </Radio>
                 ))}
-              </CheckboxGroup>
+              </RadioGroup>
               <WindowDecorationDetails roomName={room.rooms} />
             </div>
           ))}

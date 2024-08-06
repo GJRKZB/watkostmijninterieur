@@ -11,7 +11,7 @@ export interface IRoom {
   sizes: string[];
   windowDecoration: string[];
   windowDecorationDetails: string[];
-  amountWindows: string;
+  amountWindows: string[];
   windowSizes: string[];
   curtainSizes: string[];
   furniture: string[];

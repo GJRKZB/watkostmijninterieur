@@ -1,20 +1,14 @@
 import { useFormContext } from "@/app/context/FormContext";
 import { Questions } from "@/app/data/Questions";
-import {
-  CheckboxGroup,
-  Checkbox,
-  cn,
-  ScrollShadow,
-  Chip,
-} from "@nextui-org/react";
+import { RadioGroup, Radio, cn, ScrollShadow, Chip } from "@nextui-org/react";
 
 export const Floors: React.FC = () => {
   const { formData, updateFormData } = useFormContext();
 
-  const handleChange = (roomSelected: string, selectedFloors: string[]) => {
+  const handleChange = (roomSelected: string, selectedFloors: string) => {
     const updatedRooms = formData.rooms.map((room) => {
       if (room.rooms === roomSelected) {
-        return { ...room, floors: selectedFloors };
+        return { ...room, floors: [selectedFloors] };
       }
       return room;
     });
@@ -30,14 +24,14 @@ export const Floors: React.FC = () => {
               <Chip size="md" color="primary" variant="solid">
                 {room.rooms}
               </Chip>
-              <CheckboxGroup
-                value={room.floors}
+              <RadioGroup
+                value={room.floors[0] || ""}
                 onValueChange={(selectedFloors) =>
                   handleChange(room.rooms, selectedFloors)
                 }
               >
                 {Questions[1].options.map((floorType) => (
-                  <Checkbox
+                  <Radio
                     classNames={{
                       base: cn(
                         "inline-flex max-w-full m-0",
@@ -51,9 +45,9 @@ export const Floors: React.FC = () => {
                     value={floorType}
                   >
                     {floorType}
-                  </Checkbox>
+                  </Radio>
                 ))}
-              </CheckboxGroup>
+              </RadioGroup>
             </div>
           ))}
         </div>
